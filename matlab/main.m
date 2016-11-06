@@ -2,6 +2,7 @@
 
 clear
 close all;
+features_vector; % load features used for SVM
 
 % most of these records are invalid - number of inputs and outputs are
 % different.
@@ -58,23 +59,37 @@ for i = 1:length(records)
 %     size(all_class_id)
 end
 
+%% Data extraction
+extracted_data=all_data(features.val>0);
+training_data=extracted_data; % Temporary :D
+test_data=extracted_data;
+
 %% class id preparation
 
 % class 1 probably means 'healthy'
 all_class_id2 = double(all_class_id==2);
 all_class_id3 = double(all_class_id==3);
 
-%% svm training
-SVMModel2 = fitcsvm( all_data, all_class_id2, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
-SVMModel3 = fitcsvm( all_data, all_class_id3, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
+%% svm training 
+% One-against-all strategy with "winner-takes-all" rule for classyfication
+SVMModel2 = fitcsvm( training_data, all_class_id2, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
+SVMModel3 = fitcsvm( training_data, all_class_id3, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
 
 %% svm check
-res2 = predict( SVMModel2, all_data );
-res3 = predict( SVMModel3, all_data );
+[res2,score2] = predict( SVMModel2, test_data );
+[res3,score3] = predict( SVMModel3, test_data );
 
-accuracy2 = sum( (res2 + all_class_id2)>1.5 )/sum( all_class_id2)
-accuracy3 = sum( (res3 + all_class_id3)>1.5 )/sum( all_class_id3)
+class1_score=max(score2(:,1),score3(:,1)); % max score of zero results for both SVMs
+class2_score=score2(:,2);
+class3_score=score3(:,2);
 
-false_detections2 = sum( (all_class_id2 - res2)<-0.5 )/sum( all_class_id2==0 )
-false_detections3 = sum( (all_class_id3 - res3)<-0.5 )/sum( all_class_id3==0 )
+[~,final_result]=max([class1_score class2_score class3_score],[],2); % find index of max result in each row
+
+accuracy = sum( (final_result - all_class_id)==0 )/sum( all_class_id)
+
+% accuracy2 = sum( (res2 + all_class_id2)>1.5 )/sum( all_class_id2)
+% accuracy3 = sum( (res3 + all_class_id3)>1.5 )/sum( all_class_id3)
+% 
+% false_detections2 = sum( (all_class_id2 - res2)<-0.5 )/sum( all_class_id2==0 )
+% false_detections3 = sum( (all_class_id3 - res3)<-0.5 )/sum( all_class_id3==0 )
 

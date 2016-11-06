@@ -2,6 +2,7 @@
 
 clear
 close all;
+features_vector; % load features used for SVM
 
 % most of these records are invalid - number of inputs and outputs are
 % different.
@@ -13,21 +14,6 @@ close all;
 
 % records = [100];
 
-features=[0 % r_peak77
-          1 % r_peak_value1
-          1 %rr_pre_interval
-          1 %rr_post_interval
-          1 %p_onset
-          1 %p_onset_val
-          1 %p_peak
-          1 %p_peak_va
-          0 %p_end
-          1 %p_end_va
-          1 %qrs_onset
-          0 %qrs_onset_val
-          1 %qrs_end
-          1 %qrs_end_val
-          1t_peak129.000000 t_peak_val0.061707 t_end152.000000 t_end_val-0.003777
 
 
 records = [101 201];
@@ -73,19 +59,28 @@ for i = 1:length(records)
 %     size(all_class_id)
 end
 
+%% Data extraction
+extracted_data=all_data(features.val>0);
+
+
 %% class id preparation
 
 % class 1 probably means 'healthy'
 all_class_id2 = double(all_class_id==2);
 all_class_id3 = double(all_class_id==3);
 
-%% svm training
+%% svm training 
+% One-against-all strategy with "winner-takes-all" rule for clasyffication
 SVMModel2 = fitcsvm( all_data, all_class_id2, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
 SVMModel3 = fitcsvm( all_data, all_class_id3, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
 
 %% svm check
-res2 = predict( SVMModel2, all_data );
-res3 = predict( SVMModel3, all_data );
+[res2,score2] = predict( SVMModel2, all_data );
+[res3,score3] = predict( SVMModel3, all_data );
+
+class1_score=max(score2(:,1),score3(:,1));
+class2_score=score2(:,2);
+class3_score=score3(:,2);
 
 accuracy2 = sum( (res2 + all_class_id2)>1.5 )/sum( all_class_id2)
 accuracy3 = sum( (res3 + all_class_id3)>1.5 )/sum( all_class_id3)

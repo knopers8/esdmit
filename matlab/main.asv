@@ -13,9 +13,27 @@ close all;
 
 % records = [100];
 
+features=[0 % r_peak77
+          1 % r_peak_value1
+          1 %rr_pre_interval
+          1 %rr_post_interval
+          1 %p_onset
+          1 %p_onset_val
+          1 %p_peak
+          1 %p_peak_va
+          0 %p_end
+          1 %p_end_va
+          1 %qrs_onset
+          0 %qrs_onset_val
+          1 %qrs_end
+          1 %qrs_end_val
+          1t_peak129.000000 t_peak_val0.061707 t_end152.000000 t_end_val-0.003777
+
+
 records = [101 201];
 
 normalization_enabled = true;
+
 
 
 
@@ -62,17 +80,16 @@ all_class_id2 = double(all_class_id==2);
 all_class_id3 = double(all_class_id==3);
 
 %% svm training
-SVMModel2 = fitcsvm( all_data, all_class_id2, 'KernelFunction', 'polynomial', 'PolynomialOrder', 3 );
-SVMModel3 = fitcsvm( all_data, all_class_id3, 'KernelFunction', 'polynomial', 'PolynomialOrder', 3 );
+SVMModel2 = fitcsvm( all_data, all_class_id2, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
+SVMModel3 = fitcsvm( all_data, all_class_id3, 'KernelFunction', 'polynomial', 'PolynomialOrder', 2 );
 
 %% svm check
 res2 = predict( SVMModel2, all_data );
 res3 = predict( SVMModel3, all_data );
 
-accuracy2 = sum( (res2 + all_class_id2)>1.5 )/sum( all_class_id2);
-accuracy3 = sum( (res3 + all_class_id3)>1.5 )/sum( all_class_id3);
+accuracy2 = sum( (res2 + all_class_id2)>1.5 )/sum( all_class_id2)
+accuracy3 = sum( (res3 + all_class_id3)>1.5 )/sum( all_class_id3)
 
-disp('Discovered 2:');
-disp(sum(res2));
-disp('Discovered 3:');
-disp(sum(res3));
+false_detections2 = sum( (all_class_id2 - res2)<-0.5 )/sum( all_class_id2==0 )
+false_detections3 = sum( (all_class_id3 - res3)<-0.5 )/sum( all_class_id3==0 )
+

@@ -13,24 +13,6 @@ close all;
 
 % records = [100];
 
-features=[0 % r_peak77
-          1 % r_peak_value1
-          1 %rr_pre_interval
-          1 %rr_post_interval
-          1 %p_onset
-          1 %p_onset_val
-          1 %p_peak
-          1 %p_peak_va
-          0 %p_end
-          1 %p_end_va
-          1 %qrs_onset
-          0 %qrs_onset_val
-          1 %qrs_end
-          1 %qrs_end_val
-          1 %t_peak
-          1 %t_peak_val
-          1 %t_end
-          1 ];%t_end_val
 
 
 records = [101 201];

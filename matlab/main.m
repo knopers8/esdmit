@@ -60,7 +60,7 @@ for i = 1:length(records)
 end
 
 %% Data extraction
-extracted_data=all_data(features.val>0);
+extracted_data=all_data(:,features.val>0);
 training_data=extracted_data; % Temporary :D
 test_data=extracted_data;
 

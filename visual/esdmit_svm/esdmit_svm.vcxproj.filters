@@ -24,7 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SVM.h">
+    <ClInclude Include="BinarySVM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="esdmit_svm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SVM.cpp">
+    <ClCompile Include="BinarySVM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

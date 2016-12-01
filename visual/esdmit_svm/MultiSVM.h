@@ -11,6 +11,8 @@ private:
 
 	int iDataCount;
 
+	int iClassesCount;
+
 	std::string iKernelFunction;
 
 	std::vector<BinarySVM> iSVMList;

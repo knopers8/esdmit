@@ -80,7 +80,7 @@ SVMModel3 = fitcsvm( training_data, all_class_id3, 'KernelFunction', 'polynomial
 [res3,score3] = predict( SVMModel3, test_data );
 
 class1_score=max(score2(:,1),score3(:,1)); % max score of zero results for both SVMs
-class2_score=score2(:,2);
+class2_score=abs(score2(:,2));
 class3_score=score3(:,2);
 
 [~,final_result]=max([class1_score class2_score class3_score],[],2); % find index of max result in each row

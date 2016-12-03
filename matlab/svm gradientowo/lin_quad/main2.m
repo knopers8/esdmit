@@ -8,16 +8,13 @@ kernel=0; % 1 - linear, 0 - quadratic
 
 
 if kernel
-    X=[1 3
+    X=[1 1
        2 2
-       3 1
-       3 2
-       6 1
-       5 2
-       4 3
-       3 4
-       1 1];
-    y=[1; 1; 1; 1; -1; -1; -1; -1; -1];
+       5 5
+       6 6
+       7 7
+       12 12];
+    y=[1; 1; 2;2 ;2; 3];
     [N,m]=size(X);
     w0=rand(m+1,1); %Starting point
     fun_handle=@lin_kernel;

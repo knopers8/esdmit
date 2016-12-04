@@ -58,17 +58,18 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 	Data_Vector_T b;
 
 	double regularization = (aLam / 2) * a.squaredNorm();
+	double acc = 0;
 	double tmp = 0;
-	double tmp2 = 0;
+	double last = aVector(iDim);
 
+	Data_Vector_T temp_vec = aTrainData * a;
 	for (int i = 0; i < iDataCount; i++)
 	{
-		b = aTrainData.row(i);
-		tmp2 = 1 - aTrainOutputs(i) * (a.dot(b) + aVector(iDim));
-		tmp += tmp2 > 0 ? tmp2 : 0;
+		tmp = 1 - aTrainOutputs(i) * (temp_vec(i) + last);
+		acc += tmp > 0 ? tmp : 0;
 	}
-
-	return regularization + tmp / iDataCount;
+	
+	return regularization + acc / iDataCount;
 }
 
 

@@ -12,7 +12,7 @@
 #include "util.hpp"
 
 #include <iostream>
-#include <ctime>
+
 
 #define BINARY_SVM_TESTx
 #define MULTI_SVM_TEST
@@ -103,18 +103,16 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	MultiSVM svm_instance("linear", true);
 
-	//Matrix_T norm_data = svm_instance.Normalize(teach_data_inputs);
-
-	//std::cout << "teach_data_inputs: " << std::endl << teach_data_inputs << std::endl;
-	//std::cout << "norm_data: " << std::endl << norm_data << std::endl;
-
 	t_train = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 	svm_instance.Train(teach_data_inputs, teach_data_outputs, w0, C, max_it, eps);
+
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 	classify_outputs = svm_instance.Classify(teach_data_inputs);
 
+
 	t_end = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
+
 
 	std::cout << "teach_data_outputs: " << teach_data_outputs << std::endl;
 	std::cout << "classify_outputs: " << classify_outputs << std::endl;

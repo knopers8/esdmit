@@ -57,9 +57,9 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 	Data_Vector_T a = aVector.head(iDim);
 	Data_Vector_T b;
 
-	float regularization = (aLam / 2) * a.squaredNorm();
-	float tmp = 0;
-	float tmp2 = 0;
+	double regularization = (aLam / 2) * a.squaredNorm();
+	double tmp = 0;
+	double tmp2 = 0;
 
 	for (int i = 0; i < iDataCount; i++)
 	{
@@ -82,7 +82,7 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 	Data_Vector_T b;
 	Data_Vector_T output;
 
-	float current_output;
+	double current_output;
 
 	for (int i = 0; i < iDataCount; i++)
 	{

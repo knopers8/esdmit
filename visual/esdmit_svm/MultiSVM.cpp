@@ -54,11 +54,10 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 {
 	//test each svm
-	std::vector<Class_Vector_T> binary_results(iClassesCount);
+	std::vector<Data_Vector_T> proximity_results(iClassesCount);
 	for (int i = 0; i < iClassesCount; i++)
 	{
-		binary_results[i] = iSVMList[i].Classify(aData);
-		//std::cout << "binary_results " << i << " " << binary_results[i] << std::endl;
+		iSVMList[i].Classify(aData, proximity_results[i]);
 	}
 
 	//for each row choose the best //todo: use distance instead, when it will be available
@@ -67,16 +66,15 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 	for (int i = 0; i < data_count; i++)
 	{
 		results(i) = 0;
+		double best = -100000000;
 		for (int j = 0; j < iClassesCount; j++)
 		{
-			if (binary_results[j](i) == 1)
+			if (proximity_results[j](i) > best)
 			{
+				best = proximity_results[j](i);
 				results(i) = j + 1;
-				break;
 			}
 		}
 	}
-
-
 	return results;
 }

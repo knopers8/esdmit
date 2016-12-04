@@ -11,7 +11,7 @@ BinarySVM::~BinarySVM()
 {
 }
 
-
+//aTrainOutputs should have only -1's and 1's
 void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps)
 {
 	// SVM_GRAD gradient linear svm training algoritm for non - separable data
@@ -108,7 +108,7 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 }
 
 
-Class_Vector_T BinarySVM::Classify(const Matrix_T& aData)
+Class_Vector_T BinarySVM::Classify(const Matrix_T& aData, Data_Vector_T& aProximities)
 {
 	int data_count = aData.rows();
 
@@ -119,6 +119,8 @@ Class_Vector_T BinarySVM::Classify(const Matrix_T& aData)
 	{
 		output(i) = (0 < values(i)) - (values(i) < 0); //sign()
 	}
-
+	
+	
+	aProximities = values;
 	return output;
 }

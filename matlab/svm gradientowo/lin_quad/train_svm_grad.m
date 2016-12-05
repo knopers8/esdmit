@@ -1,4 +1,4 @@
-function [ w, output, value, error, cost ] = svm_grad2( X,y, w0 ,C,max_it,eps,kernel)
+function [ w, output, value, error, cost ] = train_svm_grad( X,y, w0 ,C,max_it,eps,kernel)
 %SVM_GRAD gradient linear svm training algoritm for non-separable data
 %% OUTPUTS
 % w - found vector [w1..wm b]

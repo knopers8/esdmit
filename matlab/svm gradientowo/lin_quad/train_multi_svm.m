@@ -1,4 +1,4 @@
-function [ output,error] = multi_svm( X,y, w0 ,C,max_it,eps,kernel)
+function [ classificator, output,error] = train_multi_svm( X,y, w0 ,C,max_it,eps,kernel)
 %% INPUTS
 % X - training data, [N,m]- m-number of dimensions, N- number of data
 % points
@@ -15,9 +15,10 @@ function [ output,error] = multi_svm( X,y, w0 ,C,max_it,eps,kernel)
  
  output=zeros(n,1);
  cl_value=zeros(n,m);
+ classificator=zeros(length(w0),m);
  for i=1:m % all clas iterations
     labels(:,i)= 2*(y==classes(i))-1; % 1 if point belong to i-th class, -1 if not
-     [~ ,~ , cl_value(:,i),~ , ~ ] = svm_grad2( X,labels(:,i), w0 ,C,max_it,eps,kernel);
+     [classificator(:,i) ,~ , cl_value(:,i),~ , ~ ] = train_svm_grad( X,labels(:,i), w0 ,C,max_it,eps,kernel);
  end
  for i=1:n % all points iterations
     [~,ind] = max((cl_value(i,:)));

@@ -37,6 +37,6 @@ C=10; %% Paramteter C (0,inf) small C= fuck contraints, large margin big. C= use
 % output may be some random shit
 max_it=10000; % max iterations
 eps=0.001; % stop algorithm when error is below this value
-[ w, output, value, error, cost ] = svm_grad2( X,y, w0 ,C,max_it,eps,fun_handle);
+[ w, output, value, error, cost ] = classify_svm_grad( X,y, w0 ,C,max_it,eps,fun_handle);
 error
 marigin=2/(w'*w);

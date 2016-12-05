@@ -1,16 +1,25 @@
 close all;
-kernel=1; % 1 - linear, 0 - quadratic
+choose_kernel=1; % 1 - linear, 0 - quadratic
 
-if kernel
-     y =[   1     1     2     2     2   3]';
+if choose_kernel
+    % Training data
+     y =[   1     1     2     2     2   2 2 ]';
      X =[1     1
          2     2
          5     5
          6     6
          7     7
-         15    15];
+         16    15
+         15    16];
+     % Test data
+     y_v=[1 1 2 2 2  ]';
+     X_v=[1 2
+           2 1
+           5 6
+           6 5
+           15 15];
      C = 10 ;    
-     [Xn] = normalization( X );
+     [Xn,means, stds] = normalization( X );
      [N,m]=size(Xn);
      w0=rand(m+1,1); %Starting point
      fun_handle=@lin_kernel;
@@ -25,4 +34,7 @@ end
 
 max_it=10000; % max iterations
 eps=0.001; % stop algorithm when error is below this value
-[ output,error] = multi_svm( Xn,y, w0 ,C,max_it,eps,fun_handle)
+[ classificator, output,error] = train_multi_svm( Xn,y, w0 ,C,max_it,eps,fun_handle);
+[ X_vn] = classificator_normalization( X_v , means, stds );
+
+[output, value] = classify_multi_svm( X_vn, classificator,fun_handle);

@@ -33,7 +33,7 @@ else
 end
 
 max_it=10000; % max iterations
-eps=0.001; % stop algorithm when error is below this value
+eps=0.001; % stop algorithm when eraror is below this value
 [ classificator, output,error] = train_multi_svm( Xn,y, w0 ,C,max_it,eps,fun_handle);
 [ X_vn] = classificator_normalization( X_v , means, stds );
 

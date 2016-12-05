@@ -10,7 +10,6 @@ function [ out] = gradient2( X,y, w,C,kernel)
             for j=1:m
                   L(i,j)=-y(i)*X_tmp(j);
             end 
-%             L(i,m+1)=-y(i);
         end
     end
     out=lam*[w(1:end -1); 0]+ (sum(L)')/N;

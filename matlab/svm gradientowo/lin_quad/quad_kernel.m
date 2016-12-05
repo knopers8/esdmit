@@ -2,8 +2,7 @@ function [ out ] = quad_kernel( X_i,b )
 %quad kernel
  m=length(X_i);
  D=quad_kernel_size(m);
-%  out =zeros(D,1) ; To powinien byæ rozmiar ale jakoœ nie mog³em w
-%  sensownym czasie wymyœliæ jak numerowaæ indeksy w tej podwójnej pêtli
+%  out =zeros(D,1) ;
 out =zeros(m,1) ;
  for i=1:m
      out(i)=X_i(i)^2;

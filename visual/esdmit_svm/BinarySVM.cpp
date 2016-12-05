@@ -11,7 +11,7 @@ BinarySVM::~BinarySVM()
 {
 }
 
-
+//aTrainOutputs should have only -1's and 1's
 void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps)
 {
 	// SVM_GRAD gradient linear svm training algoritm for non - separable data
@@ -57,18 +57,19 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 	Data_Vector_T a = aVector.head(iDim);
 	Data_Vector_T b;
 
-	float regularization = (aLam / 2) * a.squaredNorm();
-	float tmp = 0;
-	float tmp2 = 0;
+	double regularization = (aLam / 2) * a.squaredNorm();
+	double acc = 0;
+	double tmp = 0;
+	double last = aVector(iDim);
 
+	Data_Vector_T temp_vec = aTrainData * a;
 	for (int i = 0; i < iDataCount; i++)
 	{
-		b = aTrainData.row(i);
-		tmp2 = 1 - aTrainOutputs(i) * (a.dot(b) + aVector(iDim));
-		tmp += tmp2 > 0 ? tmp2 : 0;
+		tmp = 1 - aTrainOutputs(i) * (temp_vec(i) + last);
+		acc += tmp > 0 ? tmp : 0;
 	}
-
-	return regularization + tmp / iDataCount;
+	
+	return regularization + acc / iDataCount;
 }
 
 
@@ -82,7 +83,7 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 	Data_Vector_T b;
 	Data_Vector_T output;
 
-	float current_output;
+	double current_output;
 
 	for (int i = 0; i < iDataCount; i++)
 	{
@@ -108,7 +109,7 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 }
 
 
-Class_Vector_T BinarySVM::Classify(const Matrix_T& aData)
+Class_Vector_T BinarySVM::Classify(const Matrix_T& aData, Data_Vector_T& aProximities)
 {
 	int data_count = aData.rows();
 
@@ -119,6 +120,8 @@ Class_Vector_T BinarySVM::Classify(const Matrix_T& aData)
 	{
 		output(i) = (0 < values(i)) - (values(i) < 0); //sign()
 	}
-
+	
+	
+	aProximities = values;
 	return output;
 }

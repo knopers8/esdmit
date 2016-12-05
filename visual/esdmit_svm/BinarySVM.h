@@ -44,7 +44,7 @@ public:
 
 	void Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs,  const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps);
 
-	Class_Vector_T Classify(const Matrix_T& aData);
+	Class_Vector_T Classify(const Matrix_T& aData, Data_Vector_T& aProximities = Data_Vector_T());
 
 	void Normalize( Matrix_T& aData ); //todo
 

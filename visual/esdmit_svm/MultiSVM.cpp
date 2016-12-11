@@ -25,11 +25,11 @@ Matrix_T MultiSVM::NormalizeTrainData(const Matrix_T& aData) //todo: fix normali
 	{
 		Data_Vector_T vec = aData.col(j);
 		double mean = vec.mean();
-		double std = (vec - mean * Data_Vector_T::Ones(iDataCount)).norm();
+		double std = sqrt((vec - mean * Data_Vector_T::Ones(iDataCount)).squaredNorm() / (iDataCount-1)); //.norm();
 
 		normalized.col(j) = (vec - mean * Data_Vector_T::Ones(iDataCount)) / std;
-		iMeans.push_back(mean); BinarySVMLog("mean: " << mean);
-		iStds.push_back(std); BinarySVMLog("std: " << std);
+		iMeans.push_back(mean);
+		iStds.push_back(std);
 	}
 	
 	return normalized;
@@ -43,7 +43,7 @@ Matrix_T MultiSVM::NormalizeClassifyData(const Matrix_T& aData)
 	{
 		normalized.col(j) = (aData.col(j) - iMeans[j] * Data_Vector_T::Ones(iDataCount)) / iStds[j];
 	}
-	
+
 	return normalized;
 }
 

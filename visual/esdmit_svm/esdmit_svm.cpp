@@ -119,6 +119,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 #ifdef MULTI_SVM_TEST_QUAD
 
+	//Data_Vector_T vec(4);
+	//vec << 1, 1, -1, -1;
+	//double mean = vec.mean();
+	//double std = sqrt((vec - mean * Data_Vector_T::Ones(4)).squaredNorm()/3); //.norm();
+	//std::cout << "mean " << mean << " std " << std << std::endl;
+
+	//return 0;
+
+
 	Eigen::Matrix<double, 7, 2> teach_data_inputs;
 	Eigen::VectorXi teach_data_outputs(7);
 	Eigen::VectorXi classify_outputs;
@@ -134,7 +143,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	teach_data_outputs << 1, 1, 2, 2, 2, 1, 1;
 
-	double C = 10;
+	double C = 10; 
 	int max_it = 10000; // max iterations
 	double eps = 0.001; // stop algorithm when error is below this value
 	int N = teach_data_inputs.rows();
@@ -146,7 +155,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	w0 << 0.6557, 0.0357, 0.8491, 0.9340;
 
 
-	MultiSVM svm_instance("quadratic", false);
+	MultiSVM svm_instance("quadratic", true);
 
 	t_train = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 	svm_instance.Train(teach_data_inputs, teach_data_outputs, C, max_it, eps, w0);

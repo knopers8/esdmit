@@ -22,7 +22,7 @@ private:
 	std::string iKernelType;
 
 	std::vector<BinarySVM> iSVMList;
-
+public:
 	Matrix_T NormalizeTrainData(const Matrix_T& aData);
 
 	Matrix_T NormalizeClassifyData(const Matrix_T& aData);

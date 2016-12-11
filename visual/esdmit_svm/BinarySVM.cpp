@@ -131,7 +131,7 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 
 	Data_Vector_T w = aStartingVector;
 	Data_Vector_T w_grad;
-	BinarySVMLog("aStartingVector\n" << aStartingVector);
+	//BinarySVMLog("aStartingVector\n" << aStartingVector);
 	int iDataCount = aTrainData.rows();
 	float lam = 2 / (iDataCount * aC);
 
@@ -155,7 +155,7 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 	}
 
 	iClassificator = w;
-	BinarySVMLog("classificator:\n" << w);
+	//BinarySVMLog("classificator:\n" << w);
 }
 
 //function[out] = cost_fun2(X, y, w, C, kernel)
@@ -173,7 +173,6 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 //end
 double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const double aLam)
 {
-	//int vector_length = aVector.size(); //todo: change iDataDims to vector_lenghts
 	Data_Vector_T a = aVector.head(iDim-1);
 	
 	double regularization = (aLam / 2) * a.squaredNorm();

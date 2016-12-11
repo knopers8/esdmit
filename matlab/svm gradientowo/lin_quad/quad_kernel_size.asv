@@ -1,7 +1,0 @@
-function [ D] = quad_kernel_size( d )
-%QUAD_KERNEL_SIZE computes size of quadratic kerne
-%   Detailed explanation goes here
-
-
-end
-

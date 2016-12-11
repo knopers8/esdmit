@@ -17,7 +17,7 @@ int MultiSVM::QuadraticKernelSize(int aDimension)
 	return BinarySVM::QuadraticKernelSize(aDimension);
 }
 
-Matrix_T MultiSVM::NormalizeTrainData(const Matrix_T& aData) //todo: fix normalization (std exact)
+Matrix_T MultiSVM::NormalizeTrainData(const Matrix_T& aData)
 {
 	Matrix_T normalized(iDataCount, iDataDim);
 
@@ -54,14 +54,16 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 {//todo: when there are only two classes, use one binary svm
 	//find unique classes (or their count)
 	iClassesCount = 0;
+	std::cout << "aTrainOutputs.size() " << aTrainOutputs.size() << std::endl;
 	for (int i = 0; i < aTrainOutputs.size(); i++)
 	{
 		if (iClassesCount < aTrainOutputs(i))
 		{
+			std::cout << aTrainOutputs(i) << std::endl;
 			iClassesCount++;
 		}
 	}
-	//std::cout << "iClassesCount: " << iClassesCount << std::endl;
+	std::cout << "iClassesCount: " << iClassesCount << std::endl;
 	//initialize data and parameters
 	iSVMList = std::vector<BinarySVM>(iClassesCount, BinarySVM(iKernelType));
 	iDataDim = aTrainData.cols();
@@ -71,7 +73,7 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 	//normalize data if necessary
 	train_data = iNormalize ? NormalizeTrainData(aTrainData) : aTrainData;
 
-	BinarySVMLog("train_data:\n" << train_data);
+	//BinarySVMLog("train_data:\n" << train_data);
 	
 	//todo: add starting vector initialization only if wasnt given any
 	Class_Vector_T binary_outputs(iDataCount);
@@ -80,6 +82,7 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 
 	for (int class_id = 1; class_id <= iClassesCount; class_id++)
 	{
+		std::cout << "teaching class_ID: " << class_id << std::endl;
 		//create output vectors 1 vs the rest
 		for (int j = 0; j < iDataCount; j++)
 		{

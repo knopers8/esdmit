@@ -9,7 +9,7 @@ private:
 	
 	bool iNormalize;
 
-	int iDim;
+	int iDataDim;
 
 	int iDataCount;
 
@@ -19,7 +19,7 @@ private:
 
 	std::vector<double> iStds;
 
-	std::string iKernelFunction;
+	std::string iKernelType;
 
 	std::vector<BinarySVM> iSVMList;
 
@@ -35,7 +35,9 @@ public:
 
 	//Matrix_T Normalize(const Matrix_T& aData);
 
-	void Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps);
+	static int QuadraticKernelSize(int aDimension);
+
+	void Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector = Data_Vector_T());
 
 	Class_Vector_T Classify(const Matrix_T& aData);
 

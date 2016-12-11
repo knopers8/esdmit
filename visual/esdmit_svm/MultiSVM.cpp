@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-MultiSVM::MultiSVM(const std::string& aKernelFunction, bool aNormalize) : iKernelFunction(aKernelFunction), iNormalize(aNormalize), iDataCount(0), iDim(0)
+MultiSVM::MultiSVM(const std::string& aKernelFunction, bool aNormalize) : iKernelType(aKernelFunction), iNormalize(aNormalize), iDataCount(0), iDataDim(0)
 {
 }
 
@@ -12,29 +12,34 @@ MultiSVM::~MultiSVM()
 {
 }
 
-Matrix_T MultiSVM::NormalizeTrainData(const Matrix_T& aData)
+int MultiSVM::QuadraticKernelSize(int aDimension)
 {
-	Matrix_T normalized(iDataCount, iDim);
+	return BinarySVM::QuadraticKernelSize(aDimension);
+}
 
-	for (int j = 0; j < iDim; j++)
+Matrix_T MultiSVM::NormalizeTrainData(const Matrix_T& aData) //todo: fix normalization (std exact)
+{
+	Matrix_T normalized(iDataCount, iDataDim);
+
+	for (int j = 0; j < iDataDim; j++)
 	{
 		Data_Vector_T vec = aData.col(j);
 		double mean = vec.mean();
 		double std = (vec - mean * Data_Vector_T::Ones(iDataCount)).norm();
 
 		normalized.col(j) = (vec - mean * Data_Vector_T::Ones(iDataCount)) / std;
-		iMeans.push_back(mean);
-		iStds.push_back(std);
+		iMeans.push_back(mean); BinarySVMLog("mean: " << mean);
+		iStds.push_back(std); BinarySVMLog("std: " << std);
 	}
-
+	
 	return normalized;
 }
 
 Matrix_T MultiSVM::NormalizeClassifyData(const Matrix_T& aData)
 {
-	Matrix_T normalized(iDataCount, iDim);
+	Matrix_T normalized(iDataCount, iDataDim);
 
-	for (int j = 0; j < iDim; j++)
+	for (int j = 0; j < iDataDim; j++)
 	{
 		normalized.col(j) = (aData.col(j) - iMeans[j] * Data_Vector_T::Ones(iDataCount)) / iStds[j];
 	}
@@ -45,8 +50,8 @@ Matrix_T MultiSVM::NormalizeClassifyData(const Matrix_T& aData)
 
 
 //aTrainOutputs classes should be numbers from 1 to x, but not e.g. 1,2,4
-void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps)
-{
+void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
+{//todo: when there are only two classes, use one binary svm
 	//find unique classes (or their count)
 	iClassesCount = 0;
 	for (int i = 0; i < aTrainOutputs.size(); i++)
@@ -58,18 +63,20 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 	}
 	//std::cout << "iClassesCount: " << iClassesCount << std::endl;
 	//initialize data and parameters
-	iSVMList = std::vector<BinarySVM>(iClassesCount);
-	iDim = aTrainData.cols();
+	iSVMList = std::vector<BinarySVM>(iClassesCount, BinarySVM(iKernelType));
+	iDataDim = aTrainData.cols();
 	iDataCount = aTrainData.rows();
 	Matrix_T train_data;
 
 	//normalize data if necessary
 	train_data = iNormalize ? NormalizeTrainData(aTrainData) : aTrainData;
 
+	BinarySVMLog("train_data:\n" << train_data);
 	
+	//todo: add starting vector initialization only if wasnt given any
 	Class_Vector_T binary_outputs(iDataCount);
-	Data_Vector_T starting_vector(iDim + 1);
-	starting_vector.setRandom();
+	Data_Vector_T starting_vector = aStartingVector;// iKernelType.compare("quadratic") ? Data_Vector_T(iDataDim + 1) : Data_Vector_T(QuadraticKernelSize(iDataDim) + 1);
+	//starting_vector.setRandom();
 
 	for (int class_id = 1; class_id <= iClassesCount; class_id++)
 	{
@@ -101,7 +108,7 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 		iSVMList[i].Classify(train_data, proximity_results[i]);
 	}
 
-	//for each row choose the best //todo: use distance instead, when it will be available
+	//for each row choose the best 
 	int data_count = train_data.rows();
 	Class_Vector_T results(data_count);
 	for (int i = 0; i < data_count; i++)

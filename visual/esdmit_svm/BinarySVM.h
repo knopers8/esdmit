@@ -26,21 +26,31 @@ private:
 
 	int iDim;
 
+	int iDataDim;
+
 	int iDataCount;
 
-	std::string iKernelFunction;
+	Data_Vector_T iClassificator;
+public:
+	static double SigSqrt(double aIn);
 
-	Data_Vector_T iVector;
+	std::function < Data_Vector_T(const Data_Vector_T&, const double) > iKernelFunction;
 
-	double CostFunction(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const float aLam);
+	static Data_Vector_T LinearKernel(const Data_Vector_T& aVector, const double aB);
 
-	Data_Vector_T Gradient(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const float aLam);
+	static Data_Vector_T QuadraticKernel(const Data_Vector_T& aVector, const double aB);
+
+	double CostFunction(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const double aLam);
+
+	Data_Vector_T Gradient(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const double aLam);
 
 public:
-
+	
 	BinarySVM(const std::string& aKernelFunction = "linear");
 
 	~BinarySVM();
+
+	static int QuadraticKernelSize(int aDimension);
 
 	void Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs,  const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps);
 

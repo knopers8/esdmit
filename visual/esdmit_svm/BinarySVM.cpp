@@ -81,9 +81,9 @@ int BinarySVM::QuadraticKernelSize(int aDimension)
 //end
 Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector, const double aB)
 { //todo: OPTIMISE ME PLOX!!!11!!1!!12234561!!!!@#
-	//BinarySVMLog("QuadraticKernel");
+
 	int m = aVector.size();
-	std::vector<double> output(m);// = Data_Vector_T(m);
+	std::vector<double> output(m);
 	std::vector<double> output2(m);
 	for (int i = 0; i < m; i++)
 	{
@@ -101,17 +101,6 @@ Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector, const dou
 	out.reserve(output.size());
 	out.insert(out.end(), output.begin(), output.end());
 
-
-	//std::cout << "output :" << std::endl;
-	//for (auto && it : output)
-	//	std::cout << it << std::endl;
-
-	//std::cout << "output2 :" << std::endl;
-	//for (auto && it : output2)
-	//	std::cout << it << std::endl;
-
-
-	//BinarySVMLog("Return QuadraticKernel");
 	return Data_Vector_T( Eigen::Map<Eigen::ArrayXd>(out.data(), out.size()));
 }
 
@@ -131,7 +120,7 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 
 	Data_Vector_T w = aStartingVector;
 	Data_Vector_T w_grad;
-	//BinarySVMLog("aStartingVector\n" << aStartingVector);
+
 	int iDataCount = aTrainData.rows();
 	float lam = 2 / (iDataCount * aC);
 
@@ -142,7 +131,7 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 	{
 		ni = 1 / (lam * it_count);
 		i_cost = CostFunction(aTrainData, aTrainOutputs, w, lam);
-		//BinarySVMLog("i_cost: " << i_cost);
+
 		if (i_cost <= aEps)
 		{
 			BinarySVMLog("Breaking after " << it_count << " iterations.");
@@ -150,12 +139,11 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 		}
 
 		w_grad = Gradient(aTrainData, aTrainOutputs, w, lam);
-		//BinarySVMLog("w_grad: " << w_grad);
+
 		w -= ni*w_grad;
 	}
 
 	iClassificator = w;
-	//BinarySVMLog("classificator:\n" << w);
 }
 
 //function[out] = cost_fun2(X, y, w, C, kernel)
@@ -180,10 +168,6 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 	double tmp = 0;
 	double last = aVector(iDim-1);
 
-	//Data_Vector_T temp_vec = aTrainData * a;
-	//BinarySVMLog("kernel output size: " << iKernelFunction(aTrainData.row(0), last).size() << " a size: " << a.size());
-
-	//BinarySVMLog("entering loop");
 	for (int i = 0; i < iDataCount; i++)
 	{
 		tmp = 1 - aTrainOutputs(i) * (a.dot(iKernelFunction(aTrainData.row(i), last)) + last);
@@ -212,9 +196,6 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 //end
 Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const double aLam)
 {
-	// http://www.robots.ox.ac.uk/~az/lectures/ml/lect2.pdf pages 36-38
-	//BinarySVMLog("Gradient() entering");
-
 	Matrix_T L = Matrix_T::Zero(iDataCount, iDim);
 	Data_Vector_T a = aVector.head(iDim-1);
 	Data_Vector_T b;
@@ -224,21 +205,18 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 
 	for (int i = 0; i < iDataCount; i++)
 	{
-		//BinarySVMLog("loop, i: " << i);
+
 		b = aTrainData.row(i);
 		current_output = aTrainOutputs(i);
 		Data_Vector_T x_temp = iKernelFunction(b, aVector(iDim - 1));
-		//BinarySVMLog("x_temp.size: " << x_temp.size() << " iDim: " << iDim << " aVector.size: " << aVector.size());
+
 		//if y*f(x) >= 1 constrain is not violated so cost function = 0
 		if (current_output * (a.dot( x_temp ) + aVector(iDim-1)) < 1)
 		{
-			//BinarySVMLog("->if");
 			for (int j = 0; j < iDim-1; j++)
 			{
-				//BinarySVMLog("j: " << j);
 				L(i, j) = -current_output * x_temp(j);
 			}
-			//BinarySVMLog("after inner loop");
 			L(i, iDim-1) = -current_output;
 		}
 	}
@@ -255,24 +233,16 @@ Class_Vector_T BinarySVM::Classify(const Matrix_T& aData, Data_Vector_T& aProxim
 {
 	int data_count = aData.rows();
 
-	Data_Vector_T values(data_count);// = aData * iClassificator.head(iDataDim) + iClassificator(iDataDim) * Data_Vector_T::Ones(data_count);
+	Data_Vector_T values(data_count);
 
 	Class_Vector_T output(data_count);
 	for (int i = 0; i < data_count; i++)
 	{
 		values(i) = iKernelFunction(aData.row(i), iClassificator(iDim-1)).dot(iClassificator.head(iDim-1)) + iClassificator(iDim-1);
 
-		output(i) = (0 < values(i)) - (values(i) < 0); //sign()
+		output(i) = (0 < values(i)) - (values(i) < 0); //sign() //todo: check if it exists in eigen library
 	}
-	
-	
+		
 	aProximities = values;
 	return output;
 }
-
-//for i = 1:m
-//	for j = 1 : N
-//		X_tmp = kernel(X(j, :), classificator(end, i));
-//		value(i, j) = X_tmp*classificator(:, i);
-//	end
-//end

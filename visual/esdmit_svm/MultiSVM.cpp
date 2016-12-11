@@ -25,7 +25,7 @@ Matrix_T MultiSVM::NormalizeTrainData(const Matrix_T& aData)
 	{
 		Data_Vector_T vec = aData.col(j);
 		double mean = vec.mean();
-		double std = sqrt((vec - mean * Data_Vector_T::Ones(iDataCount)).squaredNorm() / (iDataCount-1)); //.norm();
+		double std = sqrt((vec - mean * Data_Vector_T::Ones(iDataCount)).squaredNorm() / (iDataCount-1));
 
 		normalized.col(j) = (vec - mean * Data_Vector_T::Ones(iDataCount)) / std;
 		iMeans.push_back(mean);
@@ -51,8 +51,10 @@ Matrix_T MultiSVM::NormalizeClassifyData(const Matrix_T& aData)
 
 //aTrainOutputs classes should be numbers from 1 to x, but not e.g. 1,2,4
 void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
-{//todo: when there are only two classes, use one binary svm
-	//find unique classes (or their count)
+{
+	//todo: when there are only two classes, use one binary svm
+	
+	//find unique classes (or their count) //todo: gather classes id properly
 	iClassesCount = 0;
 	std::cout << "aTrainOutputs.size() " << aTrainOutputs.size() << std::endl;
 	for (int i = 0; i < aTrainOutputs.size(); i++)
@@ -64,36 +66,43 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 		}
 	}
 	std::cout << "iClassesCount: " << iClassesCount << std::endl;
+	
 	//initialize data and parameters
 	iSVMList = std::vector<BinarySVM>(iClassesCount, BinarySVM(iKernelType));
 	iDataDim = aTrainData.cols();
 	iDataCount = aTrainData.rows();
 	Matrix_T train_data;
 
-	//normalize data if necessary
+	//initialize starting vector
+	Class_Vector_T binary_outputs(iDataCount);
+	Data_Vector_T starting_vector;
+	if (aStartingVector.isZero())
+	{
+		starting_vector = iKernelType.compare("quadratic") ? Data_Vector_T(iDataDim + 1) : Data_Vector_T(QuadraticKernelSize(iDataDim) + 1);
+		starting_vector.setRandom();
+	}
+	else
+	{
+		starting_vector = aStartingVector;
+	}
+
+
+	//normalize
 	train_data = iNormalize ? NormalizeTrainData(aTrainData) : aTrainData;
 
-	//BinarySVMLog("train_data:\n" << train_data);
-	
-	//todo: add starting vector initialization only if wasnt given any
-	Class_Vector_T binary_outputs(iDataCount);
-	Data_Vector_T starting_vector = aStartingVector;// iKernelType.compare("quadratic") ? Data_Vector_T(iDataDim + 1) : Data_Vector_T(QuadraticKernelSize(iDataDim) + 1);
-	//starting_vector.setRandom();
-
+	//teach each binary svm	
 	for (int class_id = 1; class_id <= iClassesCount; class_id++)
 	{
 		std::cout << "teaching class_ID: " << class_id << std::endl;
+		
 		//create output vectors 1 vs the rest
 		for (int j = 0; j < iDataCount; j++)
 		{
 			binary_outputs(j) = aTrainOutputs(j) == class_id ? 1 : -1;
 		}
 
-		//std::cout << "class_ID: " << class_id << std::endl << binary_outputs << std::endl;
-		//teach binary svm for every output vector
 		iSVMList[class_id - 1].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
 	}
-	
 }
 
 

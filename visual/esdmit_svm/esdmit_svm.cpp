@@ -187,7 +187,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	MultiSVM svm_instance("quadratic", true);
 
 	t_train = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
-	svm_instance.Train(teach_data_inputs, teach_data_outputs, C, max_it, eps, w0);
+	svm_instance.Train(teach_data_inputs, teach_data_outputs, C, max_it, eps);// , w0);
 
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;

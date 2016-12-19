@@ -1,6 +1,9 @@
 #ifndef ALGORITHM_FILELOADER_H_
 #define ALGORITHM_FILELOADER_H_
 
+//by Wojciech Gumu³a
+
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -8,18 +11,19 @@
 #include <vector>
 #include <iterator>
 #include <cmath>
-#include <Eigen/Dense>
 
-#include "NNAlgorithm.h"
+#include "Eigen/Dense"
+#include "MultiSVM.h"
+//#include "NNAlgorithm.h"
 
 class FileLoader {
 public:
 	static void load(const std::string &data_file, const std::string &label_file,
-			  NNAlgorithm::DataType &train_data, NNAlgorithm::DataType &test_data,
-			  NNAlgorithm::LabelType &train_label, NNAlgorithm::LabelType &test_label,
+			  Matrix_T &train_data, Matrix_T &test_data,
+			  Class_Vector_T &train_label, Class_Vector_T &test_label,
 			  const int skip_first_n_cols, const double split_ratio) {
-		NNAlgorithm::DataType data_tmp;
-		NNAlgorithm::LabelType label_tmp;
+		Matrix_T data_tmp;
+		Class_Vector_T label_tmp;
 		load_data(data_file, data_tmp, skip_first_n_cols);
 		load_label(label_file, label_tmp);
 		normalize(data_tmp);
@@ -27,7 +31,7 @@ public:
 			  train_data, test_data, train_label, test_label);
 	}
 private:
-	static void load_data(const std::string &filename, NNAlgorithm::DataType &output, const int skip_first_n_cols = 0) {
+	static void load_data(const std::string &filename, Matrix_T &output, const int skip_first_n_cols = 0) {
 		std::ifstream input_stream{filename};
 		assert(input_stream.is_open());
 
@@ -61,7 +65,7 @@ private:
 		}
 	}
 
-	static void load_label(const std::string &filename, NNAlgorithm::LabelType &output) {
+	static void load_label(const std::string &filename, Class_Vector_T &output) {
 		std::ifstream input_stream{filename};
 		assert(input_stream.is_open());
 
@@ -74,10 +78,10 @@ private:
 			output(i++) = element;
 	}
 
-	static void split(const NNAlgorithm::DataType &data, const NNAlgorithm::LabelType &label,
+	static void split(const Matrix_T &data, const Class_Vector_T &label,
 				      double split_ratio,
-					  NNAlgorithm::DataType &data_out1, NNAlgorithm::DataType &data_out2,
-					  NNAlgorithm::LabelType &label_out1, NNAlgorithm::LabelType &label_out2) {
+					  Matrix_T &data_out1, Matrix_T &data_out2,
+					  Class_Vector_T &label_out1, Class_Vector_T &label_out2) {
 		assert(split_ratio >= 0 && split_ratio <= 1);
 		assert(data.rows() == label.rows());
 		int samples = static_cast<int>(data.rows());
@@ -99,7 +103,7 @@ private:
 		label_out2 << label.block(samples1, 0, samples2, 1);
 	}
 
-	static void normalize(NNAlgorithm::DataType &data) {
+	static void normalize(Matrix_T &data) {
 		const unsigned int stdev_degrees_of_freedom = 1; // matlab-compatible result
 		for (auto col = 0; col < data.cols(); col++) {
 			auto data_column = data.col(col);

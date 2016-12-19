@@ -7,6 +7,7 @@
 #include "Eigen/Eigen"
 #include "BinarySVM.h"
 #include "MultiSVM.h"
+#include "FileLoader.hpp"
 
 //not ours - timer
 #include "util.hpp"
@@ -27,43 +28,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	double t_classify;
 	double t_end;
 
-	Eigen::MatrixXd teach_data_inputs(1068, 18);
-	Eigen::VectorXi teach_data_outputs(1068);
-	std::ifstream file_data("..\\..\\ReferencyjneDane2\\100\\ConvertedQRSRawData_2.txt", std::ios::in);
-	std::ifstream file_class("..\\..\\ReferencyjneDane2\\100\\Class_IDs_2.txt", std::ios::in);
+	Matrix_T teach_data_inputs;
+	Class_Vector_T teach_data_outputs;
+	Matrix_T test_data_inputs;
+	Class_Vector_T test_data_outputs;
 
-	double num;
-	int i = 0;
-	int j = 0;
-	while (1)
-	{
-		file_data >> num;
-		if (file_data.eof())
-			break;
+	FileLoader::load("..\\..\\ReferencyjneDane2\\100\\ConvertedQRSRawData_2.txt",
+		"..\\..\\ReferencyjneDane2\\100\\Class_IDs_2.txt",
+		teach_data_inputs, test_data_inputs,
+		teach_data_outputs, test_data_outputs,
+		1, 0.9);
 
-		teach_data_inputs(i, j) = num;
-		
-		j++;
-		if (j >= 18)
-		{
-			j = 0;
-			//std::cout << i++ << std::endl;
-		}
-	}
-	file_data.close();
 
-	i = 0;
-	while (1)
-	{
-		file_class >> num;
-		if (file_class.eof())
-			break;
-
-		teach_data_outputs(i) = num;
-
-		i++;
-	}
-	file_class.close();
 
 #ifdef BINARY_SVM_TEST
 	Eigen::Matrix<double, 7, 2> teach_data_inputs;

@@ -32,13 +32,11 @@ private:
 
 	Data_Vector_T iClassificator;
 public:
-	static double SigSqrt(double aIn);
+	std::function < Data_Vector_T(const Data_Vector_T&) > iKernelFunction;
 
-	std::function < Data_Vector_T(const Data_Vector_T&, const double) > iKernelFunction;
+	Data_Vector_T LinearKernel(const Data_Vector_T& aVector);
 
-	static Data_Vector_T LinearKernel(const Data_Vector_T& aVector, const double aB);
-
-	static Data_Vector_T QuadraticKernel(const Data_Vector_T& aVector, const double aB);
+	Data_Vector_T QuadraticKernel(const Data_Vector_T& aVector);
 
 	double CostFunction(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const double aLam);
 

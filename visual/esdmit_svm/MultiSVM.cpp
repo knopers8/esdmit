@@ -66,9 +66,15 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 		}
 	}
 	std::cout << "iClassesCount: " << iClassesCount << std::endl;
+
+	if (iClassesCount < 2)
+	{
+		std::cout << "iClassesCount < 2, returning" << std::endl;
+		return;
+	}
+		
 	
 	//initialize data and parameters
-	iSVMList = std::vector<BinarySVM>(iClassesCount, BinarySVM(iKernelType));
 	iDataDim = aTrainData.cols();
 	iDataCount = aTrainData.rows();
 	Matrix_T train_data;
@@ -90,51 +96,83 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 	//normalize
 	train_data = iNormalize ? NormalizeTrainData(aTrainData) : aTrainData;
 
-	//teach each binary svm	
-	for (int class_id = 1; class_id <= iClassesCount; class_id++)
+	if (iClassesCount == 2)
 	{
-		std::cout << "teaching class_ID: " << class_id << std::endl;
-		
-		//create output vectors 1 vs the rest
+		iSVMList = std::vector<BinarySVM>(1, BinarySVM(iKernelType));
+
 		for (int j = 0; j < iDataCount; j++)
 		{
-			binary_outputs(j) = aTrainOutputs(j) == class_id ? 1 : -1;
+			binary_outputs(j) = aTrainOutputs(j) == 2 ? 1 : -1;
 		}
 
-		iSVMList[class_id - 1].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
+		iSVMList[0].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
+	}
+	else
+	{
+		iSVMList = std::vector<BinarySVM>(iClassesCount, BinarySVM(iKernelType));
+
+		//teach each binary svm	
+		for (int class_id = 1; class_id <= iClassesCount; class_id++)
+		{
+			std::cout << "teaching class_ID: " << class_id << std::endl;
+
+			//create output vectors 1 vs the rest
+			for (int j = 0; j < iDataCount; j++)
+			{
+				binary_outputs(j) = aTrainOutputs(j) == class_id ? 1 : -1;
+			}
+
+			iSVMList[class_id - 1].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
+		}
 	}
 }
 
 
 Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 {
-	Matrix_T train_data;
+	Matrix_T classify_data;
 
 	//normalize data if necessary
-	train_data = iNormalize ? NormalizeClassifyData(aData) : aData;
+	classify_data = iNormalize ? NormalizeClassifyData(aData) : aData;
 
-	//test each svm
-	std::vector<Data_Vector_T> proximity_results(iClassesCount);
-	for (int i = 0; i < iClassesCount; i++)
+	if (iClassesCount == 2)
 	{
-		iSVMList[i].Classify(train_data, proximity_results[i]);
-	}
+		Data_Vector_T proximity_results(iClassesCount);
 
-	//for each row choose the best 
-	int data_count = train_data.rows();
-	Class_Vector_T results(data_count);
-	for (int i = 0; i < data_count; i++)
-	{
-		results(i) = 0;
-		double best = -100000000;
-		for (int j = 0; j < iClassesCount; j++)
+		Class_Vector_T results = iSVMList[0].Classify(classify_data, proximity_results);
+
+		for (int i = 0; i < results.size(); i++)
 		{
-			if (proximity_results[j](i) > best)
+			results(i) = results(i) == 1 ? 2 : 1;
+		}
+
+		return results;
+	}
+	else
+	{
+		//test each svm
+		std::vector<Data_Vector_T> proximity_results(iClassesCount);
+		for (int i = 0; i < iClassesCount; i++)
+		{
+			iSVMList[i].Classify(classify_data, proximity_results[i]);
+		}
+
+		//for each row choose the best 
+		int data_count = classify_data.rows();
+		Class_Vector_T results(data_count);
+		for (int i = 0; i < data_count; i++)
+		{
+			results(i) = 0;
+			double best = -100000000;
+			for (int j = 0; j < iClassesCount; j++)
 			{
-				best = proximity_results[j](i);
-				results(i) = j + 1;
+				if (proximity_results[j](i) > best)
+				{
+					best = proximity_results[j](i);
+					results(i) = j + 1;
+				}
 			}
 		}
+		return results;
 	}
-	return results;
 }

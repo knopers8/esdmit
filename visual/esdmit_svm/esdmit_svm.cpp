@@ -40,7 +40,6 @@ int _tmain(int argc, _TCHAR* argv[])
 		1, 0.9);
 
 
-
 #ifdef BINARY_SVM_TEST
 	Eigen::Matrix<double, 7, 2> teach_data_inputs;
 	Eigen::VectorXi teach_data_outputs(7);
@@ -160,7 +159,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//w0 << 0.6557, 0.0357, 0.8491, 0.9340;
 
 
-	MultiSVM svm_instance("quadratic", true);
+	MultiSVM svm_instance("quadratic", false);
 
 	t_train = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 	svm_instance.Train(teach_data_inputs, teach_data_outputs, C, max_it, eps);// , w0);
@@ -172,6 +171,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	t_end = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 #endif //MULTI_SVM_TEST_QUAD
+	
+	
 	if (N < 15)
 	{
 		std::cout << "teach_data_outputs: " << teach_data_outputs << std::endl;
@@ -199,9 +200,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::cout << "Inputs: " << N << "\nerrors: " << errors << "\nnon-one's: " << non_1 << "\nnon-one errors: " << non_1_errors << std::endl;
 	}
 
-
-
-
+	
 	std::cout << "Program runtime: " << (t_end - t_start) << " ms" << std::endl;
 	std::cout << "Training runtime: " << (t_classify - t_train) << " ms" << std::endl;
 	std::cout << "Classifying runtime: " << (t_end - t_classify) << " ms" << std::endl;

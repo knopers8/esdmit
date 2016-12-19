@@ -5,17 +5,17 @@
 #include <functional>
 
 BinarySVM::BinarySVM(const std::string& aKernelFunction) : iDataCount(0), iDataDim(0)
-{
+{//todo: fix visibility of object's variables inside iKernelFunction
 	BinarySVMLog("initializing binarysvm, aKernelFunction: " << aKernelFunction);
-	iKernelFunction = aKernelFunction.compare("quadratic") ? BinarySVM::LinearKernel : BinarySVM::QuadraticKernel;
-	//if (aKernelFunction.compare("quadratic"))
-	//{
-	//	iKernelFunction = std::bind(&BinarySVM::LinearKernel, *this, std::placeholders::_1, std::placeholders::_2);
-	//}
-	//else
-	//{
-	//	iKernelFunction = QuadraticKernel;// std::bind(&BinarySVM::QuadraticKernel, *this, std::placeholders::_1, std::placeholders::_2);
-	//}
+	//iKernelFunction = aKernelFunction.compare("quadratic") ? BinarySVM::LinearKernel : BinarySVM::QuadraticKernel;
+	if (aKernelFunction.compare("quadratic"))
+	{
+		iKernelFunction = std::bind(&BinarySVM::LinearKernel, *this, std::placeholders::_1);
+	}
+	else
+	{
+		iKernelFunction = std::bind(&BinarySVM::QuadraticKernel, *this, std::placeholders::_1);
+	}
 }
 
 
@@ -23,29 +23,22 @@ BinarySVM::~BinarySVM()
 {
 }
 
-double BinarySVM::SigSqrt(double aIn)
-{
-	// out=sign(in)*sqrt(abs(in));
-	double a = sqrt(abs(aIn));
-	return aIn > 0 ? a : -a;
-}
 
-Data_Vector_T BinarySVM::LinearKernel(const Data_Vector_T& aVector, const double aB)
+Data_Vector_T BinarySVM::LinearKernel(const Data_Vector_T& aVector)
 {
 	//BinarySVMLog("LinearKernel");
 	return aVector;
 }
 
+//QUAD_KERNEL_SIZE computes size of quadratic kernel where d is linear
+//kernel eg.:
+//-linear = [w1 w2], d = 2
+// -quadratic = [w1*w1 sqrt(2)w1*w2 w2*w2] D = 3
+// Note : we are using[w1 w2 b] so above example don't match
+// https ://wikimedia.org/api/rest_v1/media/math/render/svg/7a8a37a96bc8bce31c758d7c378cb2b46db6ece3
+//     D = 2 * d + 1; // first and last sum of the elements + c
 int BinarySVM::QuadraticKernelSize(int aDimension)
 {
-	//QUAD_KERNEL_SIZE computes size of quadratic kernel where d is linear
-	//kernel eg.:
-	//-linear = [w1 w2], d = 2
-	// -quadratic = [w1*w1 sqrt(2)w1*w2 w2*w2] D = 3
-	// Note : we are using[w1 w2 b] so above example don't match
-	// https ://wikimedia.org/api/rest_v1/media/math/render/svg/7a8a37a96bc8bce31c758d7c378cb2b46db6ece3
-	//     D = 2 * d + 1; // first and last sum of the elements + c
-
 	int D = aDimension; // first and last sum of the elements + c
 	for (int i = 2; i <= aDimension; i++) // This double sum in middle
 	{
@@ -62,7 +55,6 @@ int BinarySVM::QuadraticKernelSize(int aDimension)
 //	% quad kernel
 //	m = length(X_i);
 //	D = quad_kernel_size(m);
-//	%  out = zeros(D, 1);
 //	out = zeros(m, 1);
 //	for i = 1:m
 //		out(i) = X_i(i) ^ 2;
@@ -76,33 +68,30 @@ int BinarySVM::QuadraticKernelSize(int aDimension)
 //	for i = 1:m
 //		out2(i) = sig_sqrt(2 * b)*X_i(i);
 //	end
-//	%   out = [out; out2; b ^ 2]';
 //	out = [out; 1]';
 //end
-Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector, const double aB)
-{ //todo: OPTIMISE ME PLOX!!!11!!1!!12234561!!!!@#
-
+Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector)
+{ 
 	int m = aVector.size();
-	std::vector<double> output(m);
-	std::vector<double> output2(m);
-	for (int i = 0; i < m; i++)
+	Data_Vector_T output( QuadraticKernelSize(m) + 1);
+
+	int k;
+	for (k = 0; k < m; k++)
 	{
-		output[i] = aVector(i) * aVector(i);
+		output(k) = aVector(k) * aVector(k);
 	}
 	for (int i = 1; i < m; i++)
 	{
 		for (int j = 0; j < i; j++)
 		{
-			output.push_back(1.414213562373095*aVector(i)*aVector(j)); //sqrt(2)
+			//magic number = sqrt(2)
+			output(k++) = (1.414213562373095*aVector(i)*aVector(j));
 		}
 	}
-	
-	std::vector<double> out;
-	out.reserve(output.size());
-	out.insert(out.end(), output.begin(), output.end());
 
-	return Data_Vector_T( Eigen::Map<Eigen::ArrayXd>(out.data(), out.size()));
+	return output;
 }
+
 
 
 
@@ -170,7 +159,7 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 
 	for (int i = 0; i < iDataCount; i++)
 	{
-		tmp = 1 - aTrainOutputs(i) * (a.dot(iKernelFunction(aTrainData.row(i), last)) + last);
+		tmp = 1 - aTrainOutputs(i) * (a.dot(iKernelFunction(aTrainData.row(i))) + last);
 		acc += tmp > 0 ? tmp : 0;
 	}
 	
@@ -208,7 +197,7 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 
 		b = aTrainData.row(i);
 		current_output = aTrainOutputs(i);
-		Data_Vector_T x_temp = iKernelFunction(b, aVector(iDim - 1));
+		Data_Vector_T x_temp = iKernelFunction(b);
 
 		//if y*f(x) >= 1 constrain is not violated so cost function = 0
 		if (current_output * (a.dot( x_temp ) + aVector(iDim-1)) < 1)
@@ -238,11 +227,12 @@ Class_Vector_T BinarySVM::Classify(const Matrix_T& aData, Data_Vector_T& aProxim
 	Class_Vector_T output(data_count);
 	for (int i = 0; i < data_count; i++)
 	{
-		values(i) = iKernelFunction(aData.row(i), iClassificator(iDim-1)).dot(iClassificator.head(iDim-1)) + iClassificator(iDim-1);
+		values(i) = iKernelFunction(aData.row(i)).dot(iClassificator.head(iDim-1)) + iClassificator(iDim-1);
 
 		output(i) = (0 < values(i)) - (values(i) < 0); //sign() //todo: check if it exists in eigen library
 	}
-		
+
+	//todo: consider giving aProximities only when necessary
 	aProximities = values;
 	return output;
 }

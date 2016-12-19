@@ -1,8 +1,9 @@
 #ifndef ALGORITHM_FILELOADER_H_
 #define ALGORITHM_FILELOADER_H_
 
-//by Wojciech Gumu³a
+//FileLoader by Wojciech Gumu³a
 
+//modified data types for our usage 
 
 #include <iostream>
 #include <fstream>
@@ -14,7 +15,7 @@
 
 #include "Eigen/Dense"
 #include "MultiSVM.h"
-//#include "NNAlgorithm.h"
+
 
 class FileLoader {
 public:

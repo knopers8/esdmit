@@ -3,6 +3,8 @@
 #include "BinarySVM.h"
 #include <vector>
 
+#define TRAIN_THREADING
+
 class MultiSVM
 {
 private:
@@ -28,6 +30,8 @@ public:
 	Matrix_T NormalizeTrainData(const Matrix_T& aData);
 
 	Matrix_T NormalizeClassifyData(const Matrix_T& aData);
+
+	static void TrainingThread(BinarySVM * aSVM, const Matrix_T& aTrainData, const Class_Vector_T aTrainOutputs, const Data_Vector_T aStartingVector, const float aC, const int aMaxIt, const float aEps);
 
 public:
 

@@ -188,7 +188,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			if (teach_data_outputs(i) != 1)
 			{
 				non_1++;
-				std::cout << "should be " << teach_data_outputs(i) << ", is " << classify_outputs(i) << std::endl;
+				//std::cout << "should be " << teach_data_outputs(i) << ", is " << classify_outputs(i) << std::endl;
 			}
 
 			if (teach_data_outputs(i) - classify_outputs(i) != 0)

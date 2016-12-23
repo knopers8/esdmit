@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <algorithm>
+#include <thread>
+
 
 MultiSVM::MultiSVM(const std::string& aKernelFunction, bool aNormalize) : iKernelType(aKernelFunction), iNormalize(aNormalize), iDataCount(0), iDataDim(0)
 {
@@ -49,8 +51,13 @@ Matrix_T MultiSVM::NormalizeClassifyData(const Matrix_T& aData)
 }
 
 
+void MultiSVM::TrainingThread(BinarySVM * aSVM, const Matrix_T& aTrainData, const Class_Vector_T aTrainOutputs, const Data_Vector_T aStartingVector, const float aC, const int aMaxIt, const float aEps)
+{
+	aSVM->Train(aTrainData, aTrainOutputs, aStartingVector, aC, aMaxIt, aEps);
+	std::cout << "Training - thread ended." << std::endl;
+}
 
-//aTrainOutputs classes should be numbers from 1 to x, but not e.g. 1,2,4
+
 void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
 {
 	
@@ -109,20 +116,35 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 	{
 		iSVMList = std::vector<BinarySVM>(iClassesList.size(), BinarySVM(iKernelType));
 
+#ifdef TRAIN_THREADING
+		std::vector<std::thread> thread_list(iClassesList.size());
+#endif 
+
 		//teach each binary svm	
 		for (unsigned int class_id = 0; class_id < iClassesList.size(); class_id++)
 		{
-			std::cout << "teaching class_ID: " << iClassesList[class_id] << std::endl;
-
 			//create output vectors 1 vs the rest
 			for (int j = 0; j < iDataCount; j++)
 			{
 				binary_outputs(j) = aTrainOutputs(j) == iClassesList[class_id] ? 1 : -1;
-				//if (aTrainOutputs(j) != iClassesList[class_id])
-				//	std::cout << j << " ";
 			}
+
+#ifdef TRAIN_THREADING
+			std::cout << "Training - thread for class " << iClassesList[class_id] << " started." << std::endl;
+			thread_list[class_id] = std::thread(&MultiSVM::TrainingThread, &iSVMList[class_id], train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
+#else 
+			std::cout << "teaching class_ID: " << iClassesList[class_id] << std::endl;
 			iSVMList[class_id].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
+#endif 
 		}
+
+#ifdef TRAIN_THREADING
+		for (auto && thr : thread_list)
+		{
+			thr.join();
+		}
+#endif
+
 	}
 	std::cout << "Training complete" << std::endl;
 }

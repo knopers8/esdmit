@@ -93,8 +93,6 @@ Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector)
 }
 
 
-
-
 //aTrainOutputs should have only -1's and 1's
 void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aStartingVector, const float aC, const int aMaxIt, const float aEps)
 {
@@ -110,9 +108,7 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 	Data_Vector_T w = aStartingVector;
 	Data_Vector_T w_grad;
 
-	int iDataCount = aTrainData.rows();
 	float lam = 2 / (iDataCount * aC);
-
 	double i_cost;
 	float ni;
 	
@@ -196,7 +192,6 @@ Data_Vector_T BinarySVM::Gradient(const Matrix_T& aTrainData, const Class_Vector
 
 	for (int i = 0; i < iDataCount; i++)
 	{
-
 		b = aTrainData.row(i);
 		current_output = aTrainOutputs(i);
 		Data_Vector_T x_temp = iKernelFunction(b);

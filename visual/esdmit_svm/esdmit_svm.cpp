@@ -33,11 +33,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	Matrix_T test_data_inputs;
 	Class_Vector_T test_data_outputs;
 
-	FileLoader::load("..\\..\\ReferencyjneDane2\\100\\ConvertedQRSRawData_2.txt",
-		"..\\..\\ReferencyjneDane2\\100\\Class_IDs_2.txt",
+	FileLoader::load("..\\..\\ReferencyjneDane2\\105\\ConvertedQRSRawData_2.txt",
+		"..\\..\\ReferencyjneDane2\\105\\Class_IDs_2.txt",
 		teach_data_inputs, test_data_inputs,
 		teach_data_outputs, test_data_outputs,
-		1, 0.9);
+		1, 1);
 
 
 #ifdef BINARY_SVM_TEST
@@ -167,7 +167,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 	classify_outputs = svm_instance.Classify(teach_data_inputs);
-
+	std::cout << "Classyfing complete" << std::endl;
 
 	t_end = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 #endif //MULTI_SVM_TEST_QUAD
@@ -186,7 +186,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		for (int i = 0; i < N; i++)
 		{
 			if (teach_data_outputs(i) != 1)
+			{
 				non_1++;
+				std::cout << "should be " << teach_data_outputs(i) << ", is " << classify_outputs(i) << std::endl;
+			}
 
 			if (teach_data_outputs(i) - classify_outputs(i) != 0)
 			{

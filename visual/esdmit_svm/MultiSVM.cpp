@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "MultiSVM.h"
-#include <iostream>
 
+#include <iostream>
+#include <algorithm>
 
 MultiSVM::MultiSVM(const std::string& aKernelFunction, bool aNormalize) : iKernelType(aKernelFunction), iNormalize(aNormalize), iDataCount(0), iDataDim(0)
 {
@@ -52,24 +53,22 @@ Matrix_T MultiSVM::NormalizeClassifyData(const Matrix_T& aData)
 //aTrainOutputs classes should be numbers from 1 to x, but not e.g. 1,2,4
 void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
 {
-	//todo: when there are only two classes, use one binary svm
 	
-	//find unique classes (or their count) //todo: gather classes id properly
-	iClassesCount = 0;
+	//find unique classes (or their count)
 	std::cout << "aTrainOutputs.size() " << aTrainOutputs.size() << std::endl;
 	for (int i = 0; i < aTrainOutputs.size(); i++)
 	{
-		if (iClassesCount < aTrainOutputs(i))
+		if (std::find(iClassesList.begin(), iClassesList.end(), aTrainOutputs(i)) == iClassesList.end())
 		{
 			std::cout << aTrainOutputs(i) << std::endl;
-			iClassesCount++;
+			iClassesList.push_back(aTrainOutputs(i));
 		}
 	}
-	std::cout << "iClassesCount: " << iClassesCount << std::endl;
+	std::cout << "iClassesList.size(): " << iClassesList.size() << std::endl;
 
-	if (iClassesCount < 2)
+	if (iClassesList.size() < 2)
 	{
-		std::cout << "iClassesCount < 2, returning" << std::endl;
+		std::cout << "iClassesList.size() < 2, returning" << std::endl;
 		return;
 	}
 		
@@ -96,35 +95,36 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 	//normalize
 	train_data = iNormalize ? NormalizeTrainData(aTrainData) : aTrainData;
 
-	if (iClassesCount == 2)
+	if (iClassesList.size() == 2)
 	{
 		iSVMList = std::vector<BinarySVM>(1, BinarySVM(iKernelType));
 
 		for (int j = 0; j < iDataCount; j++)
 		{
-			binary_outputs(j) = aTrainOutputs(j) == 2 ? 1 : -1;
+			binary_outputs(j) = aTrainOutputs(j) == iClassesList[1] ? 1 : -1;
 		}
-
 		iSVMList[0].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
 	}
-	else
+	else //todo: threading
 	{
-		iSVMList = std::vector<BinarySVM>(iClassesCount, BinarySVM(iKernelType));
+		iSVMList = std::vector<BinarySVM>(iClassesList.size(), BinarySVM(iKernelType));
 
 		//teach each binary svm	
-		for (int class_id = 1; class_id <= iClassesCount; class_id++)
+		for (unsigned int class_id = 0; class_id < iClassesList.size(); class_id++)
 		{
-			std::cout << "teaching class_ID: " << class_id << std::endl;
+			std::cout << "teaching class_ID: " << iClassesList[class_id] << std::endl;
 
 			//create output vectors 1 vs the rest
 			for (int j = 0; j < iDataCount; j++)
 			{
-				binary_outputs(j) = aTrainOutputs(j) == class_id ? 1 : -1;
+				binary_outputs(j) = aTrainOutputs(j) == iClassesList[class_id] ? 1 : -1;
+				//if (aTrainOutputs(j) != iClassesList[class_id])
+				//	std::cout << j << " ";
 			}
-
-			iSVMList[class_id - 1].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
+			iSVMList[class_id].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
 		}
 	}
+	std::cout << "Training complete" << std::endl;
 }
 
 
@@ -135,15 +135,19 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 	//normalize data if necessary
 	classify_data = iNormalize ? NormalizeClassifyData(aData) : aData;
 
-	if (iClassesCount == 2)
+	if (iClassesList.size() < 2)
 	{
-		Data_Vector_T proximity_results(iClassesCount);
+		return Class_Vector_T(aData.rows());
+	}
+	if (iClassesList.size() == 2)
+	{
+		Data_Vector_T proximity_results;
 
 		Class_Vector_T results = iSVMList[0].Classify(classify_data, proximity_results);
 
 		for (int i = 0; i < results.size(); i++)
 		{
-			results(i) = results(i) == 1 ? 2 : 1;
+			results(i) = results(i) == 1 ? iClassesList[1] : iClassesList[0];
 		}
 
 		return results;
@@ -151,9 +155,10 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 	else
 	{
 		//test each svm
-		std::vector<Data_Vector_T> proximity_results(iClassesCount);
-		for (int i = 0; i < iClassesCount; i++)
+		std::vector<Data_Vector_T> proximity_results(iClassesList.size());
+		for (unsigned int i = 0; i < iClassesList.size(); i++)
 		{
+			std::cout << "Classifying " << iClassesList[i] << " class" << std::endl;
 			iSVMList[i].Classify(classify_data, proximity_results[i]);
 		}
 
@@ -164,12 +169,12 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 		{
 			results(i) = 0;
 			double best = -100000000;
-			for (int j = 0; j < iClassesCount; j++)
+			for (unsigned int j = 0; j < iClassesList.size(); j++)
 			{
 				if (proximity_results[j](i) > best)
 				{
 					best = proximity_results[j](i);
-					results(i) = j + 1;
+					results(i) = iClassesList[j];
 				}
 			}
 		}

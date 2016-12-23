@@ -13,8 +13,6 @@ private:
 
 	int iDataCount;
 
-	int iClassesCount;
-
 	std::vector<double> iMeans;
 
 	std::vector<double> iStds;
@@ -22,7 +20,11 @@ private:
 	std::string iKernelType;
 
 	std::vector<BinarySVM> iSVMList;
+
+	std::vector<int> iClassesList;
+
 public:
+
 	Matrix_T NormalizeTrainData(const Matrix_T& aData);
 
 	Matrix_T NormalizeClassifyData(const Matrix_T& aData);

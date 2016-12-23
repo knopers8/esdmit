@@ -73,7 +73,7 @@ int BinarySVM::QuadraticKernelSize(int aDimension)
 Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector)
 { 
 	int m = aVector.size();
-	Data_Vector_T output( QuadraticKernelSize(m) + 1);
+	Data_Vector_T output( QuadraticKernelSize(m) );
 
 	int k;
 	for (k = 0; k < m; k++)
@@ -150,15 +150,17 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 //end
 double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const Data_Vector_T& aVector, const double aLam)
 {
+	//BinarySVMLog("aVectorsize " << aVector.size() << " iDim " << iDim);
 	Data_Vector_T a = aVector.head(iDim-1);
 	
 	double regularization = (aLam / 2) * a.squaredNorm();
 	double acc = 0;
 	double tmp = 0;
-	double last = aVector(iDim-1);
+	double last = aVector(iDim-1); //todo: check
 
 	for (int i = 0; i < iDataCount; i++)
 	{
+		//BinarySVMLog("a.size() " << a.size() << " iKernelFunction(aTrainData.row(i)).size " << iKernelFunction(aTrainData.row(i)).size())
 		tmp = 1 - aTrainOutputs(i) * (a.dot(iKernelFunction(aTrainData.row(i))) + last);
 		acc += tmp > 0 ? tmp : 0;
 	}

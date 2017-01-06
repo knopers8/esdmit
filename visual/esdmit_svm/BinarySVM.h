@@ -31,7 +31,9 @@ private:
 	int iDataCount;
 
 	Data_Vector_T iClassificator;
-public:
+
+	std::string iKernelType;
+//public:
 	std::function < Data_Vector_T(const Data_Vector_T&) > iKernelFunction;
 
 	Data_Vector_T LinearKernel(const Data_Vector_T& aVector);
@@ -45,6 +47,8 @@ public:
 public:
 	
 	BinarySVM(const std::string& aKernelFunction = "linear");
+
+	BinarySVM(const BinarySVM & aBinarySVM);
 
 	~BinarySVM();
 

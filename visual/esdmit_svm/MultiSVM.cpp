@@ -60,7 +60,6 @@ void MultiSVM::TrainingThread(BinarySVM * aSVM, const Matrix_T& aTrainData, cons
 
 void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
 {
-	
 	//find unique classes (or their count)
 	std::cout << "aTrainOutputs.size() " << aTrainOutputs.size() << std::endl;
 	for (int i = 0; i < aTrainOutputs.size(); i++)
@@ -112,7 +111,7 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 		}
 		iSVMList[0].Train(train_data, binary_outputs, starting_vector, aC, aMaxIt, aEps);
 	}
-	else //todo: threading
+	else 
 	{
 		iSVMList = std::vector<BinarySVM>(iClassesList.size(), BinarySVM(iKernelType));
 
@@ -161,7 +160,7 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 	{
 		return Class_Vector_T(aData.rows());
 	}
-	if (iClassesList.size() == 2)
+	else if (iClassesList.size() == 2)
 	{
 		Data_Vector_T proximity_results;
 

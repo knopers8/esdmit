@@ -33,11 +33,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	Matrix_T test_data_inputs;
 	Class_Vector_T test_data_outputs;
 
-	FileLoader::load("..\\..\\ReferencyjneDane2\\105\\ConvertedQRSRawData_2.txt",
-		"..\\..\\ReferencyjneDane2\\105\\Class_IDs_2.txt",
+	FileLoader::load("..\\..\\ReferencyjneDane2\\ConvertedQRSRawData_all.txt",
+		"..\\..\\ReferencyjneDane2\\Class_IDs_all.txt",
 		teach_data_inputs, test_data_inputs,
 		teach_data_outputs, test_data_outputs,
-		1, 1);
+		1, 0.5);
 
 
 #ifdef BINARY_SVM_TEST
@@ -113,10 +113,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	//w0 << 0.141886338627215, 0.421761282626275, 0.915735525189067;
 
 
-	MultiSVM svm_instance("linear", true);
+	MultiSVM svm_instance("linear", false);
 
 	t_train = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
-	svm_instance.Train(teach_data_inputs, teach_data_outputs, C, max_it, eps, w0);
+	svm_instance.Train(teach_data_inputs, teach_data_outputs, C, max_it, eps);// , w0);
 
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;

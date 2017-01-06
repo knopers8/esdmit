@@ -43,7 +43,7 @@ public:
 
 	static int QuadraticKernelSize(int aDimension);
 
-	void Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector = Data_Vector_T());
+	void Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC = 10, const int aMaxIt = 10000, const float aEps = 0.001, const Data_Vector_T& aStartingVector = Data_Vector_T());
 
 	Class_Vector_T Classify(const Matrix_T& aData);
 

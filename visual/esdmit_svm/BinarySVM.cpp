@@ -8,16 +8,38 @@ BinarySVM::BinarySVM(const std::string& aKernelFunction) : iDataCount(0), iDataD
 {//todo: fix visibility of object's variables inside iKernelFunction
 	BinarySVMLog("initializing binarysvm, aKernelFunction: " << aKernelFunction);
 	//iKernelFunction = aKernelFunction.compare("quadratic") ? BinarySVM::LinearKernel : BinarySVM::QuadraticKernel;
-	if (aKernelFunction.compare("quadratic"))
+	if ( aKernelFunction == "quadratic" )
 	{
-		iKernelFunction = std::bind(&BinarySVM::LinearKernel, *this, std::placeholders::_1);
+		//BinarySVMLog("init this: " << std::hex << (long)this);
+		iKernelType = "quadratic";
+		iKernelFunction = std::bind(&BinarySVM::QuadraticKernel, this, std::placeholders::_1);
 	}
 	else
 	{
-		iKernelFunction = std::bind(&BinarySVM::QuadraticKernel, *this, std::placeholders::_1);
+		iKernelType = "linear";
+		iKernelFunction = std::bind(&BinarySVM::LinearKernel, this, std::placeholders::_1);
 	}
 }
 
+BinarySVM::BinarySVM(const BinarySVM & aBinarySVM)
+{
+	//BinarySVMLog("cooopyyyyinnng binarysvm");
+
+	iDim = aBinarySVM.iDim;
+	iDataDim = aBinarySVM.iDataDim;
+	iDataCount = aBinarySVM.iDataCount;
+	iClassificator = aBinarySVM.iClassificator;
+	iKernelType = aBinarySVM.iKernelType;
+	
+	if (iKernelType == "quadratic")
+	{
+		iKernelFunction = std::bind(&BinarySVM::QuadraticKernel, this, std::placeholders::_1);
+	}
+	else
+	{
+		iKernelFunction = std::bind(&BinarySVM::LinearKernel, this, std::placeholders::_1);
+	}
+}
 
 BinarySVM::~BinarySVM()
 {
@@ -71,21 +93,20 @@ int BinarySVM::QuadraticKernelSize(int aDimension)
 //	out = [out; 1]';
 //end
 Data_Vector_T BinarySVM::QuadraticKernel(const Data_Vector_T& aVector)
-{ 
-	int m = aVector.size();
-	Data_Vector_T output( QuadraticKernelSize(m) );
+{
+	Data_Vector_T output( iDim-1 );
 
 	int k;
-	for (k = 0; k < m; k++)
+	for (k = 0; k < iDataDim; k++)
 	{
 		output(k) = aVector(k) * aVector(k);
 	}
-	for (int i = 1; i < m; i++)
+	for (int i = 1; i < iDataDim; i++)
 	{
 		for (int j = 0; j < i; j++)
 		{
 			//magic number = sqrt(2)
-			output(k++) = (1.414213562373095*aVector(i)*aVector(j));
+			output(k++) = 1.414213562373095*aVector(i)*aVector(j);
 		}
 	}
 
@@ -108,12 +129,13 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 	Data_Vector_T w = aStartingVector;
 	Data_Vector_T w_grad;
 
-	float lam = 2 / (iDataCount * aC);
+	double lam = 2 / (iDataCount * aC);
 	double i_cost;
-	float ni;
+	double ni;
 	
 	for (int it_count = 1; it_count <= aMaxIt; it_count++)
 	{
+		//BinarySVMLog("it_count: " << it_count);
 		ni = 1 / (lam * it_count);
 		i_cost = CostFunction(aTrainData, aTrainOutputs, w, lam);
 
@@ -126,6 +148,8 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 		w_grad = Gradient(aTrainData, aTrainOutputs, w, lam);
 
 		w -= ni*w_grad;
+		//if (it_count % (aMaxIt / 10) == 0) //show progress for debug, todo: erase someday
+		//	std::cout << "|";
 	}
 
 	iClassificator = w;
@@ -157,6 +181,7 @@ double BinarySVM::CostFunction(const Matrix_T& aTrainData, const Class_Vector_T&
 	for (int i = 0; i < iDataCount; i++)
 	{
 		//BinarySVMLog("a.size() " << a.size() << " iKernelFunction(aTrainData.row(i)).size " << iKernelFunction(aTrainData.row(i)).size())
+		//BinarySVMLog("cost function this: " << std::hex << (long)this);
 		tmp = 1 - aTrainOutputs(i) * (a.dot(iKernelFunction(aTrainData.row(i))) + last);
 		acc += tmp > 0 ? tmp : 0;
 	}

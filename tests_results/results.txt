@@ -1,12 +1,20 @@
 new_quad_c_10000_iter_5000
 Percentage of good classifications 86.235270
+Sensivity 0.894119
+Specificity 0.975071
  
 new_quad_c_10_iter_15000
 Percentage of good classifications 73.973994
+Sensivity 0.820730
+Specificity 0.909168
  
 new_quad_c_10_iter_5000
 Percentage of good classifications 86.204795
+Sensivity 0.894179
+Specificity 0.974620
  
 new_quad_c_500_iter_5000
 Percentage of good classifications 86.214953
+Sensivity 0.894097
+Specificity 0.974844
  

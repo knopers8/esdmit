@@ -1,0 +1,12 @@
+new_quad_c_10000_iter_5000
+Percentage of good classifications 86.235270
+ 
+new_quad_c_10_iter_15000
+Percentage of good classifications 73.973994
+ 
+new_quad_c_10_iter_5000
+Percentage of good classifications 86.204795
+ 
+new_quad_c_500_iter_5000
+Percentage of good classifications 86.214953
+ 

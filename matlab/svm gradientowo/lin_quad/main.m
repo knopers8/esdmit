@@ -38,3 +38,4 @@ eps=0.001; % stop algorithm when eraror is below this value
 [ X_vn] = classificator_normalization( X_v , means, stds );
 
 [output, value] = classify_multi_svm( X_vn, classificator,fun_handle);
+output

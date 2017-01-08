@@ -1,0 +1,7 @@
+Inputs: 9844
+errors: 1383
+non-one's: 1690
+non-one errors: 1160
+Program runtime: 180244 ms
+Training runtime: 178195 ms
+Classifying runtime: 94.558 ms

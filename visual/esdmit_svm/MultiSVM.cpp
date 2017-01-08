@@ -179,7 +179,7 @@ Class_Vector_T MultiSVM::Classify(const Matrix_T& aData)
 		std::vector<Data_Vector_T> proximity_results(iClassesList.size());
 		for (unsigned int i = 0; i < iClassesList.size(); i++)
 		{
-			std::cout << "Classifying " << iClassesList[i] << " class" << std::endl;
+			//std::cout << "Classifying " << iClassesList[i] << " class" << std::endl;
 			iSVMList[i].Classify(classify_data, proximity_results[i]);
 		}
 

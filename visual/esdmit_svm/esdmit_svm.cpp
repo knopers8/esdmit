@@ -37,7 +37,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		"..\\..\\ReferencyjneDane2\\Class_IDs_all.txt",
 		teach_data_inputs, test_data_inputs,
 		teach_data_outputs, test_data_outputs,
-		1, 0.5);
+		1, 0.7);
 
 
 #ifdef BINARY_SVM_TEST
@@ -53,19 +53,19 @@ int _tmain(int argc, _TCHAR* argv[])
 		1.4498, 1.2807,
 		1.2807, 1.4498;
 
-		teach_data_outputs << -1, -1, 1, 1, 1, 1, 1;
+	teach_data_outputs << -1, -1, 1, 1, 1, 1, 1;
 
 	// Paramteter C(0, inf) small C = fuck contraints, large margin big.C = use constrains, smaller margin but less mistakes in training data
 	// C = inf enforces no mistakes in training data, not always possible so
 	// output may be some random shit
-	double C = 10; 
+	double C = 10;
 	int max_it = 10000;// 10000; // max iterations
 	double eps = 0.001; // stop algorithm when error is below this value
 	int N = teach_data_inputs.rows();
 	int M = teach_data_inputs.cols();
 
 	//Starting point
-	Eigen::VectorXd w0(M+1);
+	Eigen::VectorXd w0(M + 1);
 	//w0.setRandom();
 	w0 << 0.9649, 0.1576, 0.9706;
 
@@ -73,10 +73,10 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	t_train = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 	svm_instance.Train(teach_data_inputs, teach_data_outputs, w0, C, max_it, eps);
-	
+
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
-	classify_outputs = svm_instance.Classify(teach_data_inputs);
+	classify_outputs = svm_instance.Classify(test_data_inputs);
 
 	t_end = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 
@@ -86,7 +86,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	Eigen::VectorXi classify_outputs;
 	//Eigen::Matrix<double, 9, 2> teach_data_inputs;
 	//Eigen::VectorXi teach_data_outputs(9);
-	
+
 
 
 	//teach_data_inputs << 1, 3,
@@ -120,7 +120,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
-	classify_outputs = svm_instance.Classify(teach_data_inputs);
+	classify_outputs = svm_instance.Classify(test_data_inputs);
 
 
 	t_end = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
@@ -128,7 +128,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 #endif //MULTI_SVM_TEST
-	
+
 #ifdef MULTI_SVM_TEST_QUAD
 
 	Eigen::VectorXi classify_outputs;
@@ -147,7 +147,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//teach_data_outputs << 1, 1, 2, 2, 2, 1, 1;
 
-	double C = 10; 
+	double C = 10;
 	int max_it = 10000; // max iterations
 	double eps = 0.001; // stop algorithm when error is below this value
 	int N = teach_data_inputs.rows();
@@ -166,44 +166,53 @@ int _tmain(int argc, _TCHAR* argv[])
 
 
 	t_classify = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
-	classify_outputs = svm_instance.Classify(teach_data_inputs);
+	classify_outputs = svm_instance.Classify(test_data_inputs);
 	std::cout << "Classyfing complete" << std::endl;
 
 	t_end = static_cast<double>(timer.getTimeMicroseconds()) / 1000.0;
 #endif //MULTI_SVM_TEST_QUAD
-	
-	
+
+
 	if (N < 15)
 	{
-		std::cout << "teach_data_outputs: " << teach_data_outputs << std::endl;
+		std::cout << "teach_data_outputs: " << test_data_outputs << std::endl;
 		std::cout << "classify_outputs: " << classify_outputs << std::endl;
 	}
 	else
 	{
+		std::ofstream correct_file{ "correct_outputs.txt" };
+		std::ofstream classified_file{ "classified_outputs.txt" };
+
 		int non_1 = 0;
 		int errors = 0;
 		int non_1_errors = 0;
-		for (int i = 0; i < N; i++)
+		for (int i = 0; i < test_data_inputs.rows(); i++)
 		{
-			if (teach_data_outputs(i) != 1)
+			correct_file << test_data_outputs(i) << std::endl;
+			classified_file << classify_outputs(i) << std::endl;
+
+			if (test_data_outputs(i) != 4)
 			{
 				non_1++;
 				//std::cout << "should be " << teach_data_outputs(i) << ", is " << classify_outputs(i) << std::endl;
 			}
 
-			if (teach_data_outputs(i) - classify_outputs(i) != 0)
+			if (test_data_outputs(i) - classify_outputs(i) != 0)
 			{
 				errors++;
-				if (teach_data_outputs(i)!=1)
+				if (test_data_outputs(i) != 4)
 				{
 					non_1_errors++;
 				}
 			}
 		}
-		std::cout << "Inputs: " << N << "\nerrors: " << errors << "\nnon-one's: " << non_1 << "\nnon-one errors: " << non_1_errors << std::endl;
+		correct_file.close();
+		classified_file.close();
+
+		std::cout << "Inputs: " << test_data_inputs.rows() << "\nerrors: " << errors << "\nnon-one's: " << non_1 << "\nnon-one errors: " << non_1_errors << std::endl;
 	}
 
-	
+
 	std::cout << "Program runtime: " << (t_end - t_start) << " ms" << std::endl;
 	std::cout << "Training runtime: " << (t_classify - t_train) << " ms" << std::endl;
 	std::cout << "Classifying runtime: " << (t_end - t_classify) << " ms" << std::endl;

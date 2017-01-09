@@ -1,20 +1,84 @@
-new_quad_c_10000_iter_5000
-Percentage of good classifications 86.235270
-Sensivity 0.894119
-Specificity 0.975071
+unique_lin_c_10000_iter_5000
+Percentage of good classifications 83.512800
+Sensivity 0.845058
+Specificity 0.997477
+Full running time:222093.00 [ms]   training time: 222060.00 [ms]   classyfication time: 31.01  [ms] 
  
-new_quad_c_10_iter_15000
-Percentage of good classifications 73.973994
-Sensivity 0.820730
-Specificity 0.909168
+unique_lin_c_100_iter_150
+Percentage of good classifications 82.984559
+Sensivity 0.832639
+Specificity 0.998902
+Full running time:5613.37 [ms]   training time: 5579.34 [ms]   classyfication time: 30.79  [ms] 
  
-new_quad_c_10_iter_5000
+unique_lin_c_10_iter_1000
+Percentage of good classifications 83.025193
+Sensivity 0.835164
+Specificity 0.998784
+Full running time:43617.10 [ms]   training time: 43567.40 [ms]   classyfication time: 47.87  [ms] 
+ 
+unique_lin_c_10_iter_10000
+Percentage of good classifications 83.248679
+Sensivity 0.841527
+Specificity 0.997707
+Full running time:395472.00 [ms]   training time: 395440.00 [ms]   classyfication time: 29.14  [ms] 
+ 
+unique_lin_c_10_iter_5000
+Percentage of good classifications 83.380740
+Sensivity 0.843429
+Specificity 0.997472
+Full running time:225848.00 [ms]   training time: 225814.00 [ms]   classyfication time: 31.82  [ms] 
+ 
+unique_lin_c_2_iter_5000
+Percentage of good classifications 83.025193
+Sensivity 0.835164
+Specificity 0.998784
+Full running time:233726.00 [ms]   training time: 233693.00 [ms]   classyfication time: 31.65  [ms] 
+ 
+unique_lin_c_500_iter_5000
+Percentage of good classifications 83.025193
+Sensivity 0.835265
+Specificity 0.998784
+Full running time:222619.00 [ms]   training time: 222574.00 [ms]   classyfication time: 43.42  [ms] 
+ 
+unique_quad_c_10000_iter_5000
+Percentage of good classifications 85.666396
+Sensivity 0.886159
+Specificity 0.977247
+Full running time:1016780.00 [ms]   training time: 1016720.00 [ms]   classyfication time: 54.16  [ms] 
+ 
+unique_quad_c_10_iter_100
+Percentage of good classifications 85.859407
+Sensivity 0.887578
+Specificity 0.978991
+Full running time:16842.40 [ms]   training time: 16789.30 [ms]   classyfication time: 51.26  [ms] 
+ 
+unique_quad_c_10_iter_1000
+Percentage of good classifications 86.275904
+Sensivity 0.900063
+Specificity 0.970966
+Full running time:204339.00 [ms]   training time: 204280.00 [ms]   classyfication time: 56.11  [ms] 
+ 
+unique_quad_c_10_iter_10000
+Percentage of good classifications 86.387647
+Sensivity 0.906394
+Specificity 0.969602
+Full running time:1980900.00 [ms]   training time: 1980830.00 [ms]   classyfication time: 57.33  [ms] 
+ 
+unique_quad_c_10_iter_5000
 Percentage of good classifications 86.204795
 Sensivity 0.894179
 Specificity 0.974620
+Full running time:964264.00 [ms]   training time: 964206.00 [ms]   classyfication time: 53.70  [ms] 
  
-new_quad_c_500_iter_5000
-Percentage of good classifications 86.214953
-Sensivity 0.894097
-Specificity 0.974844
+unique_quad_c_2_iter_5000
+Percentage of good classifications 85.625762
+Sensivity 0.885697
+Specificity 0.976779
+Full running time:870680.00 [ms]   training time: 870627.00 [ms]   classyfication time: 50.50  [ms] 
+ 
+unique_quad_c_500_iter_5000
+Percentage of good classifications 86.103210
+Sensivity 0.891923
+Specificity 0.975917
+Full running time:1027370.00 [ms]   training time: 1027310.00 [ms]   classyfication time: 57.76  [ms] 
  

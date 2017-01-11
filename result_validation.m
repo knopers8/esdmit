@@ -1,7 +1,11 @@
+% Script calulates results of C++ SVM classyfication and saves them in txt
+% file 'results.txt' when asked for directory guide program to
+% \tests_results folder.
+
 current_folder=pwd;
 data_folder=uigetdir;
 cd(data_folder);
-folders=dir('*unique*')
+folders=dir('*unique*')  % Place to change keyword to separate results you want to use
 fileID = fopen('results.txt','w');
 for i=1:length(folders)
     name=folders(i).name;

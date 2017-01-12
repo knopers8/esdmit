@@ -41,8 +41,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	Matrix_T test_data_inputs;
 	Class_Vector_T test_data_outputs;
 
-	FileLoader::load("..\\..\\ReferencyjneDane2\\all_data_unique.txt",
-		"..\\..\\ReferencyjneDane2\\all_labels_unique.txt",
+	FileLoader::load("..\\..\\ReferencyjneDane2\\data_reused.txt",
+		"..\\..\\ReferencyjneDane2\\label_reused.txt",
 		teach_data_inputs, test_data_inputs,
 		teach_data_outputs, test_data_outputs,
 		1, 0.7);
@@ -96,7 +96,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		else
 		{
-			std::string path = "..\\..\\tests_results\\unique_";
+			std::string path = "..\\..\\tests_results\\reused_";
 			path += test.SVMType == "quadratic" ? "quad" : "lin";
 			path += "_c_" + std::to_string((int)test.C);
 			path += "_iter_" + std::to_string((int)test.MaxIt);

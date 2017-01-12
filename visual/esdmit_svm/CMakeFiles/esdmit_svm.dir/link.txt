@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -pedantic -Wall -Wextra -std=c++11 -fopenmp -DNDEBUG    CMakeFiles/esdmit_svm.dir/esdmit_svm.cpp.o  -o esdmit_svm -rdynamic libaaa.so -Wl,-rpath,/home/knopers/esdmit/esdmit/visual/esdmit_svm 

@@ -148,8 +148,8 @@ void BinarySVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOu
 		w_grad = Gradient(aTrainData, aTrainOutputs, w, lam);
 
 		w -= ni*w_grad;
-		if (it_count % (aMaxIt / 10 ) == 0) //show progress for debug, todo: erase someday
-			std::cout << "|";
+		//if (it_count % (aMaxIt / 10 ) == 0) //show progress for debug, todo: erase someday
+		//	std::cout << "|";
 	}
 
 	iClassificator = w;

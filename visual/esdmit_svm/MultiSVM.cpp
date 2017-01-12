@@ -58,7 +58,7 @@ void MultiSVM::TrainingThread(BinarySVM * aSVM, const Matrix_T& aTrainData, cons
 }
 
 
-void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
+bool MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOutputs, const float aC, const int aMaxIt, const float aEps, const Data_Vector_T& aStartingVector)
 {
 	//find unique classes (or their count)
 	std::cout << "aTrainOutputs.size() " << aTrainOutputs.size() << std::endl;
@@ -75,7 +75,7 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 	if (iClassesList.size() < 2)
 	{
 		std::cout << "iClassesList.size() < 2, returning" << std::endl;
-		return;
+		return false;
 	}
 		
 	
@@ -146,6 +146,7 @@ void MultiSVM::Train(const Matrix_T& aTrainData, const Class_Vector_T& aTrainOut
 
 	}
 	std::cout << "Training complete" << std::endl;
+	return true;
 }
 
 

@@ -1,0 +1,384 @@
+reused_100lin_c_10_iter_15000
+Percentage of good classifications 98.442368
+Sensivity 0.984424
+Specificity 1.000000
+Full running time:2337.24 [ms]   training time: 2337.13 [ms]   classyfication time: 0.10  [ms] 
+ 
+reused_100quad_c_10_iter_15000
+Percentage of good classifications 97.507788
+Sensivity 0.990506
+Specificity 0.984277
+Full running time:7411.71 [ms]   training time: 7411.52 [ms]   classyfication time: 0.16  [ms] 
+ 
+reused_101lin_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:2113.04 [ms]   training time: 2112.98 [ms]   classyfication time: 0.06  [ms] 
+ 
+reused_101quad_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:5245.42 [ms]   training time: 5245.32 [ms]   classyfication time: 0.08  [ms] 
+ 
+reused_102lin_c_10_iter_15000
+Percentage of good classifications 95.054945
+Sensivity 0.955801
+Specificity 0.994253
+Full running time:2850.28 [ms]   training time: 2850.16 [ms]   classyfication time: 0.12  [ms] 
+ 
+reused_102quad_c_10_iter_15000
+Percentage of good classifications 92.857143
+Sensivity 0.960227
+Specificity 0.965714
+Full running time:7875.74 [ms]   training time: 7875.26 [ms]   classyfication time: 0.47  [ms] 
+ 
+reused_104lin_c_10_iter_15000
+Percentage of good classifications 96.875000
+Sensivity 0.989362
+Specificity 0.978947
+Full running time:1301.06 [ms]   training time: 1300.94 [ms]   classyfication time: 0.12  [ms] 
+ 
+reused_104quad_c_10_iter_15000
+Percentage of good classifications 90.625000
+Sensivity 0.935484
+Specificity 0.966667
+Full running time:3408.25 [ms]   training time: 3408.07 [ms]   classyfication time: 0.16  [ms] 
+ 
+reused_105lin_c_10_iter_15000
+Percentage of good classifications 99.591002
+Sensivity 0.995910
+Specificity 1.000000
+Full running time:8499.49 [ms]   training time: 8499.00 [ms]   classyfication time: 0.48  [ms] 
+ 
+reused_105quad_c_10_iter_15000
+Percentage of good classifications 98.977505
+Sensivity 0.995885
+Specificity 0.993840
+Full running time:26058.30 [ms]   training time: 26057.20 [ms]   classyfication time: 1.00  [ms] 
+ 
+reused_106lin_c_10_iter_15000
+Percentage of good classifications 92.038217
+Sensivity 0.935275
+Specificity 0.982993
+Full running time:2427.17 [ms]   training time: 2427.09 [ms]   classyfication time: 0.07  [ms] 
+ 
+reused_106quad_c_10_iter_15000
+Percentage of good classifications 92.675159
+Sensivity 0.963576
+Specificity 0.960396
+Full running time:7424.70 [ms]   training time: 7424.56 [ms]   classyfication time: 0.13  [ms] 
+ 
+reused_109lin_c_10_iter_15000
+Percentage of good classifications 97.076023
+Sensivity 0.970760
+Specificity 1.000000
+Full running time:2787.95 [ms]   training time: 2787.78 [ms]   classyfication time: 0.17  [ms] 
+ 
+reused_109quad_c_10_iter_15000
+Percentage of good classifications 97.076023
+Sensivity 0.976471
+Specificity 0.994012
+Full running time:8149.98 [ms]   training time: 8149.60 [ms]   classyfication time: 0.36  [ms] 
+ 
+reused_113lin_c_10_iter_15000
+Percentage of good classifications 99.563319
+Sensivity 0.995633
+Specificity 1.000000
+Full running time:3136.98 [ms]   training time: 3136.91 [ms]   classyfication time: 0.07  [ms] 
+ 
+reused_113quad_c_10_iter_15000
+Percentage of good classifications 99.563319
+Sensivity 0.995633
+Specificity 1.000000
+Full running time:8004.21 [ms]   training time: 8004.08 [ms]   classyfication time: 0.12  [ms] 
+ 
+reused_118lin_c_10_iter_15000
+Percentage of good classifications 83.870968
+Sensivity 0.870968
+Specificity 1.000000
+Full running time:306.67 [ms]   training time: 306.61 [ms]   classyfication time: 0.04  [ms] 
+ 
+reused_118quad_c_10_iter_15000
+Percentage of good classifications 83.870968
+Sensivity 0.903226
+Specificity 1.000000
+Full running time:759.25 [ms]   training time: 759.18 [ms]   classyfication time: 0.07  [ms] 
+ 
+reused_119lin_c_10_iter_15000
+Percentage of good classifications 99.183673
+Sensivity 0.991837
+Specificity 1.000000
+Full running time:2552.58 [ms]   training time: 2552.43 [ms]   classyfication time: 0.14  [ms] 
+ 
+reused_119quad_c_10_iter_15000
+Percentage of good classifications 98.775510
+Sensivity 0.987755
+Specificity 1.000000
+Full running time:6772.46 [ms]   training time: 6772.34 [ms]   classyfication time: 0.10  [ms] 
+ 
+reused_124lin_c_10_iter_15000
+Percentage of good classifications 99.526066
+Sensivity 0.995261
+Specificity 1.000000
+Full running time:3724.71 [ms]   training time: 3724.33 [ms]   classyfication time: 0.36  [ms] 
+ 
+reused_124quad_c_10_iter_15000
+Percentage of good classifications 99.052133
+Sensivity 0.995238
+Specificity 0.995238
+Full running time:9837.99 [ms]   training time: 9837.56 [ms]   classyfication time: 0.41  [ms] 
+ 
+reused_200lin_c_10_iter_15000
+Percentage of good classifications 94.444444
+Sensivity 0.985915
+Specificity 0.985915
+Full running time:1153.24 [ms]   training time: 1153.12 [ms]   classyfication time: 0.11  [ms] 
+ 
+reused_200quad_c_10_iter_15000
+Percentage of good classifications 93.055556
+Sensivity 0.971014
+Specificity 0.957143
+Full running time:2961.51 [ms]   training time: 2961.36 [ms]   classyfication time: 0.14  [ms] 
+ 
+reused_201lin_c_10_iter_15000
+Percentage of good classifications 51.724138
+Sensivity 0.517241
+Specificity 1.000000
+Full running time:300.61 [ms]   training time: 300.59 [ms]   classyfication time: 0.01  [ms] 
+ 
+reused_201quad_c_10_iter_15000
+Percentage of good classifications 51.724138
+Sensivity 0.551724
+Specificity 1.000000
+Full running time:716.72 [ms]   training time: 716.71 [ms]   classyfication time: 0.01  [ms] 
+ 
+reused_202lin_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:2322.93 [ms]   training time: 2322.80 [ms]   classyfication time: 0.12  [ms] 
+ 
+reused_202quad_c_10_iter_15000
+Percentage of good classifications 99.371069
+Sensivity 1.000000
+Specificity 0.993711
+Full running time:6603.41 [ms]   training time: 6603.17 [ms]   classyfication time: 0.22  [ms] 
+ 
+reused_203lin_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:4185.82 [ms]   training time: 4185.72 [ms]   classyfication time: 0.09  [ms] 
+ 
+reused_203quad_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:10262.10 [ms]   training time: 10261.90 [ms]   classyfication time: 0.14  [ms] 
+ 
+reused_205lin_c_10_iter_15000
+Percentage of good classifications 99.761337
+Sensivity 0.997613
+Specificity 1.000000
+Full running time:4576.92 [ms]   training time: 4576.48 [ms]   classyfication time: 0.44  [ms] 
+ 
+reused_205quad_c_10_iter_15000
+Percentage of good classifications 99.522673
+Sensivity 0.997608
+Specificity 0.997608
+Full running time:11270.00 [ms]   training time: 11269.50 [ms]   classyfication time: 0.46  [ms] 
+ 
+reused_208lin_c_10_iter_15000
+Percentage of good classifications 94.382022
+Sensivity 0.950943
+Specificity 0.992126
+Full running time:4357.93 [ms]   training time: 4357.66 [ms]   classyfication time: 0.26  [ms] 
+ 
+reused_208quad_c_10_iter_15000
+Percentage of good classifications 94.007491
+Sensivity 0.984314
+Specificity 0.954373
+Full running time:12946.80 [ms]   training time: 12946.40 [ms]   classyfication time: 0.47  [ms] 
+ 
+reused_209lin_c_10_iter_15000
+Percentage of good classifications 96.610169
+Sensivity 0.974359
+Specificity 0.991304
+Full running time:1620.93 [ms]   training time: 1620.87 [ms]   classyfication time: 0.06  [ms] 
+ 
+reused_209quad_c_10_iter_15000
+Percentage of good classifications 93.220339
+Sensivity 0.964912
+Specificity 0.964912
+Full running time:3701.28 [ms]   training time: 3701.17 [ms]   classyfication time: 0.06  [ms] 
+ 
+reused_210lin_c_10_iter_15000
+Percentage of good classifications 99.640288
+Sensivity 0.996403
+Specificity 1.000000
+Full running time:7238.33 [ms]   training time: 7237.99 [ms]   classyfication time: 0.34  [ms] 
+ 
+reused_210quad_c_10_iter_15000
+Percentage of good classifications 99.460432
+Sensivity 0.996396
+Specificity 0.998195
+Full running time:19411.40 [ms]   training time: 19410.70 [ms]   classyfication time: 0.72  [ms] 
+ 
+reused_212lin_c_10_iter_15000
+Percentage of good classifications 95.312500
+Sensivity 1.000000
+Specificity 0.953125
+Full running time:2282.30 [ms]   training time: 2282.25 [ms]   classyfication time: 0.05  [ms] 
+ 
+reused_212quad_c_10_iter_15000
+Percentage of good classifications 78.645833
+Sensivity 0.937888
+Specificity 0.829670
+Full running time:5876.53 [ms]   training time: 5876.36 [ms]   classyfication time: 0.12  [ms] 
+ 
+reused_213lin_c_10_iter_15000
+Percentage of good classifications 95.141700
+Sensivity 0.971467
+Specificity 0.993056
+Full running time:19628.10 [ms]   training time: 19626.70 [ms]   classyfication time: 1.39  [ms] 
+ 
+reused_213quad_c_10_iter_15000
+Percentage of good classifications 92.442645
+Sensivity 0.971989
+Specificity 0.962552
+Full running time:58813.40 [ms]   training time: 58811.80 [ms]   classyfication time: 1.50  [ms] 
+ 
+reused_214lin_c_10_iter_15000
+Percentage of good classifications 95.454545
+Sensivity 0.954545
+Specificity 1.000000
+Full running time:1328.75 [ms]   training time: 1328.67 [ms]   classyfication time: 0.08  [ms] 
+ 
+reused_214quad_c_10_iter_15000
+Percentage of good classifications 93.636364
+Sensivity 0.953704
+Specificity 0.980952
+Full running time:3606.74 [ms]   training time: 3606.60 [ms]   classyfication time: 0.12  [ms] 
+ 
+reused_215lin_c_10_iter_15000
+Percentage of good classifications 99.453552
+Sensivity 0.994536
+Specificity 1.000000
+Full running time:2212.92 [ms]   training time: 2212.87 [ms]   classyfication time: 0.04  [ms] 
+ 
+reused_215quad_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:5517.37 [ms]   training time: 5517.28 [ms]   classyfication time: 0.09  [ms] 
+ 
+reused_217lin_c_10_iter_15000
+Percentage of good classifications 89.393939
+Sensivity 0.893939
+Specificity 1.000000
+Full running time:1343.78 [ms]   training time: 1343.68 [ms]   classyfication time: 0.09  [ms] 
+ 
+reused_217quad_c_10_iter_15000
+Percentage of good classifications 83.333333
+Sensivity 0.904762
+Specificity 0.950000
+Full running time:3973.85 [ms]   training time: 3973.60 [ms]   classyfication time: 0.19  [ms] 
+ 
+reused_219lin_c_10_iter_15000
+Percentage of good classifications 99.756098
+Sensivity 0.997561
+Specificity 1.000000
+Full running time:5260.45 [ms]   training time: 5260.15 [ms]   classyfication time: 0.30  [ms] 
+ 
+reused_219quad_c_10_iter_15000
+Percentage of good classifications 99.512195
+Sensivity 0.997555
+Specificity 0.997555
+Full running time:14361.60 [ms]   training time: 14361.00 [ms]   classyfication time: 0.53  [ms] 
+ 
+reused_221lin_c_10_iter_15000
+Percentage of good classifications 99.236641
+Sensivity 0.992366
+Specificity 1.000000
+Full running time:1628.32 [ms]   training time: 1628.26 [ms]   classyfication time: 0.06  [ms] 
+ 
+reused_221quad_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:3959.59 [ms]   training time: 3959.51 [ms]   classyfication time: 0.06  [ms] 
+ 
+reused_222lin_c_10_iter_15000
+Percentage of good classifications 88.321168
+Sensivity 0.940568
+Specificity 0.938144
+Full running time:10008.10 [ms]   training time: 10007.50 [ms]   classyfication time: 0.56  [ms] 
+ 
+reused_222quad_c_10_iter_15000
+Percentage of good classifications 85.158151
+Sensivity 0.936508
+Specificity 0.914729
+Full running time:30497.30 [ms]   training time: 30496.40 [ms]   classyfication time: 0.90  [ms] 
+ 
+reused_223lin_c_10_iter_15000
+Percentage of good classifications 93.750000
+Sensivity 1.000000
+Specificity 0.937500
+Full running time:405.18 [ms]   training time: 405.15 [ms]   classyfication time: 0.03  [ms] 
+ 
+reused_223quad_c_10_iter_15000
+Percentage of good classifications 87.500000
+Sensivity 1.000000
+Specificity 0.875000
+Full running time:1107.95 [ms]   training time: 1107.89 [ms]   classyfication time: 0.04  [ms] 
+ 
+reused_228lin_c_10_iter_15000
+Percentage of good classifications 98.679868
+Sensivity 0.986799
+Specificity 1.000000
+Full running time:5409.73 [ms]   training time: 5409.53 [ms]   classyfication time: 0.19  [ms] 
+ 
+reused_228quad_c_10_iter_15000
+Percentage of good classifications 99.009901
+Sensivity 0.990099
+Specificity 1.000000
+Full running time:13532.80 [ms]   training time: 13532.20 [ms]   classyfication time: 0.52  [ms] 
+ 
+reused_231lin_c_10_iter_15000
+Percentage of good classifications 97.637795
+Sensivity 0.984127
+Specificity 0.992000
+Full running time:9162.58 [ms]   training time: 9162.24 [ms]   classyfication time: 0.33  [ms] 
+ 
+reused_231quad_c_10_iter_15000
+Percentage of good classifications 97.637795
+Sensivity 0.986737
+Specificity 0.989362
+Full running time:26652.30 [ms]   training time: 26651.60 [ms]   classyfication time: 0.74  [ms] 
+ 
+reused_233lin_c_10_iter_15000
+Percentage of good classifications 98.429319
+Sensivity 0.984293
+Specificity 1.000000
+Full running time:5240.58 [ms]   training time: 5240.30 [ms]   classyfication time: 0.28  [ms] 
+ 
+reused_233quad_c_10_iter_15000
+Percentage of good classifications 98.167539
+Sensivity 0.992063
+Specificity 0.989446
+Full running time:13490.70 [ms]   training time: 13489.90 [ms]   classyfication time: 0.72  [ms] 
+ 
+reused_234lin_c_10_iter_15000
+Percentage of good classifications 100.000000
+Sensivity 1.000000
+Specificity 1.000000
+Full running time:7765.99 [ms]   training time: 7765.81 [ms]   classyfication time: 0.17  [ms] 
+ 
+reused_234quad_c_10_iter_15000
+Percentage of good classifications 99.834983
+Sensivity 1.000000
+Specificity 0.998350
+Full running time:21800.20 [ms]   training time: 21799.70 [ms]   classyfication time: 0.38  [ms] 
+ 
